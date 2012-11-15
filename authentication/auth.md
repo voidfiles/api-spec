@@ -101,7 +101,7 @@ If you're building a client-side Javascript app or a mobile app that doesn't hav
 
 ### Password Flow
 
-If you're building a native application and want to avoid implementing a web-based authentication flow, the [Password Flow](/appdotnet/api-spec/blob/master/password_auth.md) may be appropriate. This flow requires special permission to use and comes with a bunch of extra rules and requirements to protect user security, so it's described on [its own page](/appdotnet/api-spec/blob/master/password_auth.md).
+If you're building a native application and want to avoid implementing a web-based authentication flow, the [Password Flow](password_auth.md) may be appropriate. This flow requires special permission to use and comes with a bunch of extra rules and requirements to protect user security, so it's described on [its own page](password_auth.md).
 
 ### App Access Token Flow
 
@@ -195,5 +195,5 @@ When making a call to one of our API resources, there are three ways to include 
 ## How can I authenticate between App.net apps?
 
 We call this Identity Delegation. The detailed [Identity Delegation
-specification](/appdotnet/api-spec/blob/master/identity-delegation.md) has its own page.
+specification](identity-delegation.md) has its own page.
 
