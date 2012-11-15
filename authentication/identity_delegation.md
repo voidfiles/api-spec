@@ -103,4 +103,4 @@ Intentionally not addressed in this document are the following:
 
 1. `delegate_token`s are valid as long as their associated `access_token`s are valid.
 1. The delegate client may cache the return value of the identity delegate endpoint for a short period of time.
-1. Feedback on this draft is welcomed. Please open an issue on the [api-spec GitHub repo](issues). Private or security-sensitive commentary can be sent to [bryan@app.net](mailto:bryan@app.net).
+1. Feedback on this draft is welcomed. Please open an issue on the [api-spec GitHub repo](https://github.com/appdotnet/api-spec/issues). Private or security-sensitive commentary can be sent to [bryan@app.net](mailto:bryan@app.net).
