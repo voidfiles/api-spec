@@ -93,7 +93,7 @@ Intentionally not addressed in this document are the following:
             }
         }
 
-    The resource server replies with an implementation-dependent description of the current user, which must include the client_id the authorized client. In the case of App.net, this is the Token object of the authorizing client's access_token as returned by the [Retrieve current Token](/appdotnet/api-spec/blob/master/resources/token.md#retrieve-current-token) endpoint.
+    The resource server replies with an implementation-dependent description of the current user, which must include the client_id the authorized client. In the case of App.net, this is the Token object of the authorizing client's access_token as returned by the [Retrieve current Token](../resources/token.md#retrieve-current-token) endpoint.
 
     The delegate client may verify that the authorized client matches some external authentication scheme and/or list of authorized applications. If the delegate token is not valid for the delegate client's client_id, this call will return a `401 Unauthorized`.
 
@@ -103,4 +103,4 @@ Intentionally not addressed in this document are the following:
 
 1. `delegate_token`s are valid as long as their associated `access_token`s are valid.
 1. The delegate client may cache the return value of the identity delegate endpoint for a short period of time.
-1. Feedback on this draft is welcomed. Please open an issue on the [api-spec GitHub repo](https://github.com/appdotnet/api-spec/issues). Private or security-sensitive commentary can be sent to [bryan@app.net](mailto:bryan@app.net).
+1. Feedback on this draft is welcomed. Please open an issue on the [api-spec GitHub repo](issues). Private or security-sensitive commentary can be sent to [bryan@app.net](mailto:bryan@app.net).
