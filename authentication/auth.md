@@ -195,5 +195,5 @@ When making a call to one of our API resources, there are three ways to include 
 ## How can I authenticate between App.net apps?
 
 We call this Identity Delegation. The detailed [Identity Delegation
-specification](identity-delegation.md) has its own page.
+specification](identity_delegation.md) has its own page.
 
