@@ -56,7 +56,7 @@ Returns multiple Users requested by id. At most 200 users can be requested.
 
 ## Retrieve a User
 
-Returns a specific <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> object.
+Returns a specific <a href="../objects/objects.md#user">User</a> object.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -148,7 +148,7 @@ Returns a specific <a href="/appdotnet/api-spec/blob/master/objects.md#user">Use
 
 ## Update a User
 
-Updates a specific <a href="/appdotnet/api-spec/blob/master/objects.md#user">User's</a> profile details. You can update a user by PUTing an object that matches the [user schema](/appdotnet/api-spec/blob/master/objects.md#user) with an HTTP header of ```Content-Type: application/json```. You must provide values for each of the following keys: ```name```, ```locale```, ```timezone```, and ```description```. For the description, you must specify ```description.text``` as a child key. You can also specific [custom links](/appdotnet/api-spec/blob/master/objects.md#user-specified-entities) for a user description.
+Updates a specific <a href="../objects/objects.md#user">User's</a> profile details. You can update a user by PUTing an object that matches the [user schema](../objects/objects.md#user) with an HTTP header of ```Content-Type: application/json```. You must provide values for each of the following keys: ```name```, ```locale```, ```timezone```, and ```description```. For the description, you must specify ```description.text``` as a child key. You can also specific [custom links](../objects/objects.md#user-specified-entities) for a user description.
 
 If you want to add or update a User's annotations, you may include the optional ```annotations``` key and pass in the annotations that are changing.
 
@@ -218,7 +218,7 @@ None.
 
 ## Retrieve a User's avatar image
 
-Retrieve a User's avatar image. This endpoint does not require authentication and will return an HTTP 302 redirect to the user's current avatar image. It will include any [query string parameters](/appdotnet/api-spec/blob/master/objects.md#images) you pass to the endpoint.
+Retrieve a User's avatar image. This endpoint does not require authentication and will return an HTTP 302 redirect to the user's current avatar image. It will include any [query string parameters](../objects/objects.md#images) you pass to the endpoint.
 
 ### URL
 > https://alpha-api.app.net/stream/0/users/[user_id]/avatar
@@ -252,7 +252,7 @@ Retrieve a User's avatar image. This endpoint does not require authentication an
 
 ## Retrieve a User's cover image
 
-Retrieve a User's cover image. This endpoint does not require authentication and will return an HTTP 302 redirect to the user's current cover image. It will include any [query string parameters](/appdotnet/api-spec/blob/master/objects.md#images) you pass to the endpoint.
+Retrieve a User's cover image. This endpoint does not require authentication and will return an HTTP 302 redirect to the user's current cover image. It will include any [query string parameters](../objects/objects.md#images) you pass to the endpoint.
 
 ### URL
 > https://alpha-api.app.net/stream/0/users/[user_id]/cover
@@ -481,7 +481,7 @@ Replace a User's avatar image with the uploaded file. The uploaded image Will be
 
 ## Follow a User
 
-Returns the <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> object of the user being followed. 
+Returns the <a href="../objects/objects.md#user">User</a> object of the user being followed. 
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -577,7 +577,7 @@ Returns the <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> o
 
 ## Unfollow a User
 
-Returns the <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> object of the user being unfollowed.
+Returns the <a href="../objects/objects.md#user">User</a> object of the user being unfollowed.
 
 *Remember, access tokens can not be passed in a HTTP body for ```DELETE``` requests. Please refer to the [authentication documentation](/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests).*
 
@@ -675,7 +675,7 @@ Returns the <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> o
 
 ## List users a user is following
 
-Returns an array of <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> objects the specified user is following. Please note that the pagination is not based on user or post ids.
+Returns an array of <a href="../objects/objects.md#user">User</a> objects the specified user is following. Please note that the pagination is not based on user or post ids.
 
 > This endpoint is currently migrated by the ```response_envelope``` and ```follow_pagination``` migrations. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -822,7 +822,7 @@ Returns an array of user ids the specified user is following.
 
 ## List users following a user
 
-Returns a list of <a href="/appdotnet/api-spec/blob/master/objects.md#user">User</a> objects for users following the specified user. Please note that the pagination is not based on user or post ids.
+Returns a list of <a href="../objects/objects.md#user">User</a> objects for users following the specified user. Please note that the pagination is not based on user or post ids.
 
 > This endpoint is currently migrated by the ```response_envelope``` and ```follow_pagination``` migrations. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -1529,7 +1529,7 @@ List all the Users who have starred a given Post.
 
 ## List User interactions with me
 
-List all the [Interactions](/appdotnet/api-spec/blob/master/objects.md#interactions) other users have had with me. *Note: you can only request this list for the current user.*
+List all the [Interactions](../objects/objects.md#interactions) other users have had with me. *Note: you can only request this list for the current user.*
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 

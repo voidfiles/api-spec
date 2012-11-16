@@ -14,7 +14,7 @@ have written differs from this documentation. If you're running in to issues, dr
 
 ## Table of Contents
 
-* [Object definitions](/appdotnet/api-spec/blob/master/objects.md)
+* [Object definitions](objects/objects.md)
 * [Resource definitions](/appdotnet/api-spec/blob/master/resources/README.md)
 * [Authentication](/appdotnet/api-spec/blob/master/auth.md)
 * [Web Intents](/appdotnet/api-spec/blob/master/intents.md)

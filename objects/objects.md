@@ -210,7 +210,7 @@ A user is the central object utilized by the App.net Stream API. They have usern
     <tr>
         <td><code>annotations</code></td>
         <td>list</td>
-        <td>Metadata about the user. See the <a href="/appdotnet/api-spec/blob/master/annotations.md">annotations documentation</a>.</td>
+        <td>Metadata about the user. See the <a href="../annotations.md">annotations documentation</a>.</td>
     </tr>
 </table>
 
@@ -235,7 +235,7 @@ will be returned with HTTPS URLs, but can be fetched over HTTP if desired.
 
 **Currently, gif images can not be resized with the ```w``` and ```h``` parameters.**
 
-A user's avatar and cover images can be [directly requested](/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-users-avatar-image) without requesting the entire user object.
+A user's avatar and cover images can be [directly requested](../resources/users.md#retrieve-a-users-avatar-image) without requesting the entire user object.
 
 ## Post
 A Post is the other central object utilized by the App.net Stream API. It has rich text and annotations which comprise all of the content a users sees in their feed.
@@ -390,12 +390,12 @@ A Post is the other central object utilized by the App.net Stream API. It has ri
     <tr>
         <td><code>annotations</code></td>
         <td>list</td>
-        <td>Metadata about the entire post. See the <a href="/appdotnet/api-spec/blob/master/annotations.md">annotations documentation</a>.</td>
+        <td>Metadata about the entire post. See the <a href="../annotations.md">annotations documentation</a>.</td>
     </tr>
     <tr>
         <td><code>entities</code></td>
         <td>object</td>
-        <td>Rich text information for this post. See the <a href="/appdotnet/api-spec/blob/master/objects.md#entities">entities documentation</a>.</td>
+        <td>Rich text information for this post. See the <a href="#entities">entities documentation</a>.</td>
     </tr>
     <tr>
         <td><code>is_deleted</code></td>
@@ -439,7 +439,7 @@ A Post is the other central object utilized by the App.net Stream API. It has ri
 * ```deleted``` has been deprecated and replaced with ```is_deleted```. This key should not be used and will be removed from the Post object soon.
 
 ### Post Annotations
-Post annotations are immutable attributes that describe the entire post. Please see the [Annotations spec](annotations.md) for more information.
+Post annotations are immutable attributes that describe the entire post. Please see the [Annotations spec](../annotations.md) for more information.
 
 #### Machine only Posts
 Some posts with annotations data may not be meant for direct consumption by a User. For example, a chess app may create Posts with annotations representing chess moves but having human readable text doesn't make sense. Machine only Posts solve this problem by allowing clients to create posts with ```annotations``` and without ```text```. These posts must be specifically asked for by using the ```include_machine=1``` query string parameter. They must contain at least one annotation and cannot contain any text. When deciding if a Post should be machine only, ask yourself "Would this Post make sense in Alpha's Global Feed?"
@@ -574,7 +574,7 @@ Entities are automatically extracted from the post text but there are 2 cases wh
 
 #### Mentions in machine only posts
 
-[Machine only posts](#machine-only-posts) don't have any text so entities cannot be extracted. We allow you to specify up to 10 users (by username or id) who can be mentioned in a machine only post. A machine only post with mentions is treated as a [directed post](/appdotnet/api-spec/blob/master/resources/posts.md#general-parameters) to those users. You should not pass the ```pos``` or ```len``` keys in these mentions. Please see the example:
+[Machine only posts](#machine-only-posts) don't have any text so entities cannot be extracted. We allow you to specify up to 10 users (by username or id) who can be mentioned in a machine only post. A machine only post with mentions is treated as a [directed post](../resources/posts.md#general-parameters) to those users. You should not pass the ```pos``` or ```len``` keys in these mentions. Please see the example:
 
 ```js
 {

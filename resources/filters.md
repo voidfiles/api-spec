@@ -2,7 +2,7 @@
 
 ## Get current user's Filters
 
-Return the <a href="/appdotnet/api-spec/blob/master/objects.md#filter">Filters</a> for the current user.
+Return the <a href="../objects/objects.md#filter">Filters</a> for the current user.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -45,9 +45,9 @@ None.
 
 ## Create a Filter
 
-Create a <a href="/appdotnet/api-spec/blob/master/objects.md#filter">Filter</a> for the current user.
+Create a <a href="../objects/objects.md#filter">Filter</a> for the current user.
 
-Send a JSON document that matches the  <a href="/appdotnet/api-spec/blob/master/objects.md#filter">filter schema</a> with an HTTP header of ```Content-Type: application/json```. Currently, the only keys we use from your JSON will be ```name```, ```match_policy``` and ```clauses```.
+Send a JSON document that matches the  <a href="../objects/objects.md#filter">filter schema</a> with an HTTP header of ```Content-Type: application/json```. Currently, the only keys we use from your JSON will be ```name```, ```match_policy``` and ```clauses```.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -56,7 +56,7 @@ Send a JSON document that matches the  <a href="/appdotnet/api-spec/blob/master/
 
 ### Data
 
-A JSON object representing the filter to create. See <a href="/appdotnet/api-spec/blob/master/objects.md#filter">the filter object</a> for more information. (Omit the <code>id</code> parameter).</td>
+A JSON object representing the filter to create. See <a href="../objects/objects.md#filter">the filter object</a> for more information. (Omit the <code>id</code> parameter).</td>
 
 ### Example
 
@@ -88,7 +88,7 @@ A JSON object representing the filter to create. See <a href="/appdotnet/api-spe
 
 ## Delete all of the current user's Filters
 
-Delete all <a href="/appdotnet/api-spec/blob/master/objects.md#filter">Filters</a> for the current user. It returns the deleted Filters on success.
+Delete all <a href="../objects/objects.md#filter">Filters</a> for the current user. It returns the deleted Filters on success.
 
 *Remember, access tokens can not be passed in a HTTP body for ```DELETE``` requests. Please refer to the [authentication documentation](/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests).*
 
@@ -133,7 +133,7 @@ None.
 
 ## Retrieve a Filter
 
-Returns a specific <a href="/appdotnet/api-spec/blob/master/objects.md#filter">Filter</a> object.
+Returns a specific <a href="../objects/objects.md#filter">Filter</a> object.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -187,7 +187,7 @@ Returns a specific <a href="/appdotnet/api-spec/blob/master/objects.md#filter">F
 
 ## Update a Filter
 
-Updates a specific <a href="/appdotnet/api-spec/blob/master/objects.md#filter">Filter</a> object. When a filter is updated, all the streams using the filter will start using the new filter criteria. You can update a filter by PUTing an object that matches the [filter schema](/appdotnet/api-spec/blob/master/objects.md#filter) with an HTTP header of ```Content-Type: application/json```. The entire filter will be replaced with new value but id's ```id``` will remain the same. Please refer to the documentation on [how to create a filter](#create-a-filter) for more information.
+Updates a specific <a href="../objects/objects.md#filter">Filter</a> object. When a filter is updated, all the streams using the filter will start using the new filter criteria. You can update a filter by PUTing an object that matches the [filter schema](../objects/objects.md#filter) with an HTTP header of ```Content-Type: application/json```. The entire filter will be replaced with new value but id's ```id``` will remain the same. Please refer to the documentation on [how to create a filter](#create-a-filter) for more information.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -251,7 +251,7 @@ Updates a specific <a href="/appdotnet/api-spec/blob/master/objects.md#filter">F
 
 ## Delete a Filter
 
-Delete a <a href="/appdotnet/api-spec/blob/master/objects.md#filter">Filter</a>. The Filter must belong to the current User. It returns the deleted Filter on success.
+Delete a <a href="../objects/objects.md#filter">Filter</a>. The Filter must belong to the current User. It returns the deleted Filter on success.
 
 *Remember, access tokens can not be passed in a HTTP body for ```DELETE``` requests. Please refer to the [authentication documentation](/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests).*
 

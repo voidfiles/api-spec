@@ -25,7 +25,7 @@ you can actually process.
 
 ### Filters
 
-Streams will give you lots of data, much of which your application may not want. A [Filter](/appdotnet/api-spec/blob/master/objects.md#filter) can be passed to the [stream creation endpoint](#create-a-stream) to control what messages are actually delivered to your App by our servers.
+Streams will give you lots of data, much of which your application may not want. A [Filter](../objects/objects.md#filter) can be passed to the [stream creation endpoint](#create-a-stream) to control what messages are actually delivered to your App by our servers.
 
 ### Response Format
 
@@ -50,7 +50,7 @@ as a key in the object so it is easy to distinguish from a Post.
 
 ## Get current token's Streams
 
-Return the <a href="/appdotnet/api-spec/blob/master/objects.md#stream">Streams</a> for the current token.
+Return the <a href="../objects/objects.md#stream">Streams</a> for the current token.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -119,9 +119,9 @@ Return the <a href="/appdotnet/api-spec/blob/master/objects.md#stream">Streams</
 
 ## Create a Stream
 
-Create a <a href="/appdotnet/api-spec/blob/master/objects.md#stream">Stream</a> for the current token.
+Create a <a href="../objects/objects.md#stream">Stream</a> for the current token.
 
-Send a JSON document that matches the  <a href="/appdotnet/api-spec/blob/master/objects.md#stream">stream schema</a> with an HTTP header of ```Content-Type: application/json```. Currently, the only keys we use from your JSON will be ```object_types```, ```type``` and ```filter_id```. If you don't want to specify a filter, omit ```filter_id```.
+Send a JSON document that matches the  <a href="../objects/objects.md#stream">stream schema</a> with an HTTP header of ```Content-Type: application/json```. Currently, the only keys we use from your JSON will be ```object_types```, ```type``` and ```filter_id```. If you don't want to specify a filter, omit ```filter_id```.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -130,7 +130,7 @@ Send a JSON document that matches the  <a href="/appdotnet/api-spec/blob/master/
 
 ### Data
 
-A JSON object representing the stream to create. See <a href="/appdotnet/api-spec/blob/master/objects.md#stream">the stream object</a> for more information. Specify ```filter_id``` instead of ```filter``` if you want to filter this stream. (Omit the ```id``` and ```endpoint``` parameters).</td>
+A JSON object representing the stream to create. See <a href="../objects/objects.md#stream">the stream object</a> for more information. Specify ```filter_id``` instead of ```filter``` if you want to filter this stream. (Omit the ```id``` and ```endpoint``` parameters).</td>
 
 ### Example
 
@@ -171,7 +171,7 @@ A JSON object representing the stream to create. See <a href="/appdotnet/api-spe
 
 ## Delete all of the current user's Streams
 
-Delete all <a href="/appdotnet/api-spec/blob/master/objects.md#stream">Streams</a> for the current token. It returns the deleted Streams on success.
+Delete all <a href="../objects/objects.md#stream">Streams</a> for the current token. It returns the deleted Streams on success.
 
 *Remember, access tokens can not be passed in a HTTP body for ```DELETE``` requests. Please refer to the [authentication documentation](/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests).*
 
@@ -224,7 +224,7 @@ None.
 
 ## Retrieve a Stream
 
-Returns a specific <a href="/appdotnet/api-spec/blob/master/objects.md#stream">Stream</a> object.
+Returns a specific <a href="../objects/objects.md#stream">Stream</a> object.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -286,7 +286,7 @@ Returns a specific <a href="/appdotnet/api-spec/blob/master/objects.md#stream">S
 
 ## Delete a Stream
 
-Delete a <a href="/appdotnet/api-spec/blob/master/objects.md#stream">Stream</a>. The Stream must belong to the current User. It returns the deleted Stream on success.
+Delete a <a href="../objects/objects.md#stream">Stream</a>. The Stream must belong to the current User. It returns the deleted Stream on success.
 
 *Remember, access tokens can not be passed in a HTTP body for ```DELETE``` requests. Please refer to the [authentication documentation](/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests).*
 
