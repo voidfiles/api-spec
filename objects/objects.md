@@ -210,7 +210,7 @@ A user is the central object utilized by the App.net Stream API. They have usern
     <tr>
         <td><code>annotations</code></td>
         <td>list</td>
-        <td>Metadata about the user. See the <a href="../annotations.md">annotations documentation</a>.</td>
+        <td>Metadata about the user. See the <a href="annotations.md">annotations documentation</a>.</td>
     </tr>
 </table>
 
@@ -390,7 +390,7 @@ A Post is the other central object utilized by the App.net Stream API. It has ri
     <tr>
         <td><code>annotations</code></td>
         <td>list</td>
-        <td>Metadata about the entire post. See the <a href="../annotations.md">annotations documentation</a>.</td>
+        <td>Metadata about the entire post. See the <a href="annotations.md">annotations documentation</a>.</td>
     </tr>
     <tr>
         <td><code>entities</code></td>
@@ -439,7 +439,7 @@ A Post is the other central object utilized by the App.net Stream API. It has ri
 * ```deleted``` has been deprecated and replaced with ```is_deleted```. This key should not be used and will be removed from the Post object soon.
 
 ### Post Annotations
-Post annotations are immutable attributes that describe the entire post. Please see the [Annotations spec](../annotations.md) for more information.
+Post annotations are immutable attributes that describe the entire post. Please see the [Annotations spec](annotations.md) for more information.
 
 #### Machine only Posts
 Some posts with annotations data may not be meant for direct consumption by a User. For example, a chess app may create Posts with annotations representing chess moves but having human readable text doesn't make sense. Machine only Posts solve this problem by allowing clients to create posts with ```annotations``` and without ```text```. These posts must be specifically asked for by using the ```include_machine=1``` query string parameter. They must contain at least one annotation and cannot contain any text. When deciding if a Post should be machine only, ask yourself "Would this Post make sense in Alpha's Global Feed?"

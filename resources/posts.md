@@ -74,19 +74,19 @@ Requests for streams of Posts can be filtered by passing query string parameters
             <td><code>include_annotations</code></td>
             <td>Optional</td>
             <td>integer (0 or 1)</td>
-            <td>Should the <a href="/appdotnet/api-spec/blob/master/annotations.md">user and post annotations</a> be included in the Post? (Default: <code>False</code>)</td>
+            <td>Should the <a href="../objects/annotations.md">user and post annotations</a> be included in the Post? (Default: <code>False</code>)</td>
         </tr>
         <tr>
             <td><code>include_post_annotations</code></td>
             <td>Optional</td>
             <td>integer (0 or 1)</td>
-            <td>Should the <a href="/appdotnet/api-spec/blob/master/annotations.md">post annotations</a> be included in the Post? (Default: <code>False</code>)</td>
+            <td>Should the <a href="../objects/annotations.md">post annotations</a> be included in the Post? (Default: <code>False</code>)</td>
         </tr>
         <tr>
             <td><code>include_user_annotations</code></td>
             <td>Optional</td>
             <td>integer (0 or 1)</td>
-            <td>Should the <a href="/appdotnet/api-spec/blob/master/annotations.md">user annotations</a> be included in the Post? (Default: <code>False</code>)</td>
+            <td>Should the <a href="../objects/annotations.md">user annotations</a> be included in the Post? (Default: <code>False</code>)</td>
         </tr>
         <tr>
             <td><code>include_starred_by</code></td>
