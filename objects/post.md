@@ -76,7 +76,7 @@ A Post is the other central object utilized by the App.net Stream API. It has ri
     <tr>
         <td><code>user</code></td>
         <td>object</td>
-        <td>This is an embedded version of the <a href='#user'>User</a> object. <b>Note:</b> In certain cases (e.g., when a user
+        <td>This is an embedded version of the <a href='user.md'>User</a> object. <b>Note:</b> In certain cases (e.g., when a user
                 account has been deleted), this key may be omitted.</td>
     </tr>
     <tr>
@@ -156,7 +156,7 @@ A Post is the other central object utilized by the App.net Stream API. It has ri
     <tr>
         <td><code>entities</code></td>
         <td>object</td>
-        <td>Rich text information for this post. See the <a href="#entities">entities documentation</a>.</td>
+        <td>Rich text information for this post. See the <a href="entities.md">entities documentation</a>.</td>
     </tr>
     <tr>
         <td><code>is_deleted</code></td>

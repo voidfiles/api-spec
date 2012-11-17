@@ -113,7 +113,7 @@ A user is the central object utilized by the App.net Stream API. They have usern
                 <tr>
                     <td><code>entities</code></td>
                     <td>object</td>
-                    <td>Entities included in biographical information. See information on <a href="#entities">entities</a> for reference.</td>
+                    <td>Entities included in biographical information. See information on <a href="entities.md">entities</a> for reference.</td>
                 </tr>
             </table>
         </td>

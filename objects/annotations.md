@@ -138,7 +138,7 @@ The ```user.annotations``` field will be a list of individual annotation objects
 
 Annotations are currently live in the API.
 
-To create Post annotations you must give App.net a well-formed JSON encoded post that matches the [Post schema](objects/objects.md#post). Please see the [Create Post](https://github.com/appdotnet/api-spec/blob/master/resources/posts.md#create-a-post) documentations for more information.
+To create Post annotations you must give App.net a well-formed JSON encoded post that matches the [Post schema](objects/post.md). Please see the [Create Post](https://github.com/appdotnet/api-spec/blob/master/resources/posts.md#create-a-post) documentations for more information.
 
 To add or update User annotations, you [Update a user profile](https://github.com/appdotnet/api-spec/blob/master/resources/users.md#update-a-user) and pass in the annotations you want to add or update. To delete an annotation, omit the ```value``` key for the annotation type you want to delete. For example, to delete a user's blog url, specify ```{"type": "net.app.core.directory.blog"}```.
 

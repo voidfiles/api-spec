@@ -68,7 +68,7 @@ Requests for streams of Posts can be filtered by passing query string parameters
             <td><code>include_machine</code></td>
             <td>Optional</td>
             <td>integer (0 or 1)</td>
-            <td>Should <a href="../objects/objects.md#machine-only-posts">machine only posts</a> be included? (Default: <code>False</code>)</td>
+            <td>Should <a href="../objects/post.md#machine-only-posts">machine only posts</a> be included? (Default: <code>False</code>)</td>
         </tr>
         <tr>
             <td><code>include_annotations</code></td>
@@ -92,13 +92,13 @@ Requests for streams of Posts can be filtered by passing query string parameters
             <td><code>include_starred_by</code></td>
             <td>Optional</td>
             <td>integer (0 or 1)</td>
-            <td>Should a sample of Users who have starred a Post be returned with the Post objects? Please see the <a href="../objects/objects.md#post">Post schema</a>. (Default: <code>False</code>)</td>
+            <td>Should a sample of Users who have starred a Post be returned with the Post objects? Please see the <a href="../objects/post.md">Post schema</a>. (Default: <code>False</code>)</td>
         </tr>
         <tr>
             <td><code>include_reposters</code></td>
             <td>Optional</td>
             <td>integer (0 or 1)</td>
-            <td>Should a sample of Users who have reposted a Post be returned with the Post objects? Please see the <a href="../objects/objects.md#post">Post schema</a>. (Default: <code>False</code>)</td>
+            <td>Should a sample of Users who have reposted a Post be returned with the Post objects? Please see the <a href="../objects/post.md">Post schema</a>. (Default: <code>False</code>)</td>
         </tr>
         <tr>
             <td><code>include_user</code> (<em>Coming soon</em>)</td>
@@ -118,9 +118,9 @@ After thinking through the pagination use cases more, we don't think ```min_id``
 Post id is the ordering field for multiple posts (not ```created_at```). ```created_at``` is meant to be displayed to users, not to sort posts. This also makes pagination with ```since_id``` and ```before_id``` more straightforward. Posts are presently always returned in reverse chronological order (newest to oldest). As a result, the Posts endpoints will always return the newest posts that meet the requested criteria e.g. before_id and count.
 
 ## Create a Post
-Create a new <a href="../objects/objects.md#post">Post</a> object. Mentions and hashtags will be parsed out of the post text, as will bare URLs.
+Create a new <a href="../objects/post.md">Post</a> object. Mentions and hashtags will be parsed out of the post text, as will bare URLs.
 
-You can also create a Post by sending JSON in the HTTP post body that matches the <a href="../objects/objects.md#post">post schema</a> with an HTTP header of ```Content-Type: application/json```. Currently, the only keys we use from your JSON will be ```text```, ```reply_to```, ```machine_only```, ```annotations``` and ```entities```. To create complex posts (including [machine only posts](../objects/objects.md#machine-only-posts)), you must use the JSON interface. See the [JSON example](#json-example) below. If you would like to specify your own entities, please refer to the [user specified entites](../objects/objects.md#user-specified-entities) documentation.
+You can also create a Post by sending JSON in the HTTP post body that matches the <a href="../objects/post.md">post schema</a> with an HTTP header of ```Content-Type: application/json```. Currently, the only keys we use from your JSON will be ```text```, ```reply_to```, ```machine_only```, ```annotations``` and ```entities```. To create complex posts (including [machine only posts](../objects/post.md#machine-only-posts)), you must use the JSON interface. See the [JSON example](#json-example) below. If you would like to specify your own entities, please refer to the [user specified entites](../objects/entities.md#user-specified-entities) documentation.
 
 *Note: You cannot reply to a repost. Please reply to the parent Post.*
 
@@ -325,7 +325,7 @@ Returns multiple Posts requested by id. At most 200 posts can be requested.
 ```
 
 ## Retrieve a Post
-Returns a specific <a href="../objects/objects.md#post">Post</a>.
+Returns a specific <a href="../objects/post.md">Post</a>.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -407,7 +407,7 @@ Returns a specific <a href="../objects/objects.md#post">Post</a>.
 
 ## Delete a Post
 
-Delete a <a href="../objects/objects.md#post">Post</a>. The current user must be the same user who created the Post. It returns the deleted Post on success.
+Delete a <a href="../objects/post.md">Post</a>. The current user must be the same user who created the Post. It returns the deleted Post on success.
 
 *Remember, access tokens can not be passed in a HTTP body for ```DELETE``` requests. Please refer to the [authentication documentation](/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests).*
 
@@ -491,7 +491,7 @@ Delete a <a href="../objects/objects.md#post">Post</a>. The current user must be
 
 ## Retrieve the replies to a Post
 
-Retrieve all the <a href="../objects/objects.md#post">Post</a>s that are in the same thread as this post. The specified Post does not have to be the root of the conversation. Additionally, the specified Post will be included in the response at the appropriate place.
+Retrieve all the <a href="../objects/post.md">Post</a>s that are in the same thread as this post. The specified Post does not have to be the root of the conversation. Additionally, the specified Post will be included in the response at the appropriate place.
 
 **This endpoint would be more accurately named ```stream/0/posts/[post_id]/thread``` and may be renamed in a later API version.**
 
@@ -574,7 +574,7 @@ Retrieve all the <a href="../objects/objects.md#post">Post</a>s that are in the 
 
 ## Retrieve Posts created by a User
 
-Get the most recent <a href="../objects/objects.md#post">Post</a>s created by a specific <a href="../objects/objects.md#user">User</a> in reverse post order.
+Get the most recent <a href="../objects/post.md">Post</a>s created by a specific <a href="../objects/user.md">User</a> in reverse post order.
 
 *Note: the User object is not returned for these Posts.*
 
@@ -1020,7 +1020,7 @@ Remove a Star from a Post.
 
 ## Retrieve Posts starred by a User
 
-Get the most recent <a href="../objects/objects.md#post">Post</a>s starred by a specific <a href="../objects/objects.md#user">User</a> in reverse post order. Stars are a way for Users to
+Get the most recent <a href="../objects/post.md">Post</a>s starred by a specific <a href="../objects/user.md">User</a> in reverse post order. Stars are a way for Users to
 save posts without rebroadcasting the Post to their followers.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
@@ -1111,7 +1111,7 @@ save posts without rebroadcasting the Post to their followers.
 
 ## Retrieve Posts mentioning a User
 
-Get the most recent <a href="../objects/objects.md#post">Post</a>s mentioning by a specific <a href="../objects/objects.md#user">User</a> in reverse post order.
+Get the most recent <a href="../objects/post.md">Post</a>s mentioning by a specific <a href="../objects/user.md">User</a> in reverse post order.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -1201,7 +1201,7 @@ Get the most recent <a href="../objects/objects.md#post">Post</a>s mentioning by
 
 ## Retrieve a User's personalized stream
 
-Return the 20 most recent <a href="../objects/objects.md#post">Post</a>s from the current User and the Users they follow.
+Return the 20 most recent <a href="../objects/post.md">Post</a>s from the current User and the Users they follow.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -1272,7 +1272,7 @@ Return the 20 most recent <a href="../objects/objects.md#post">Post</a>s from th
 
 ## Retrieve a User's unified stream
 
-Return the 20 most recent [Post](../objects/objects.md#post)s from the current User's [personalized stream](#retrieve-a-users-personalized-stream) and [mentions stream](#retrieve-posts-mentioning-a-user) merged into one stream.
+Return the 20 most recent [Post](../objects/post.md)s from the current User's [personalized stream](#retrieve-a-users-personalized-stream) and [mentions stream](#retrieve-posts-mentioning-a-user) merged into one stream.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -1343,7 +1343,7 @@ Return the 20 most recent [Post](../objects/objects.md#post)s from the current U
 
 ## Retrieve the Global stream
 
-Return the 20 most recent <a href="../objects/objects.md#post">Post</a>s from the Global stream.
+Return the 20 most recent <a href="../objects/post.md">Post</a>s from the Global stream.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -1413,7 +1413,7 @@ Return the 20 most recent <a href="../objects/objects.md#post">Post</a>s from th
 ```
 ## Retrieve tagged Posts
 
-Return the 20 most recent <a href="../objects/objects.md#post">Post</a>s for a specific hashtag.
+Return the 20 most recent <a href="../objects/post.md">Post</a>s for a specific hashtag.
 
 > This endpoint is currently migrated by the ```response_envelope``` migration. Please refer to the [Migrations documentation](/appdotnet/api-spec/blob/master/migrations.md#current-migrations) for more info.
 
@@ -1485,7 +1485,7 @@ Return the 20 most recent <a href="../objects/objects.md#post">Post</a>s for a s
 
 ## Update a Stream Marker
 
-Update the User's current place in a Stream. To update a Stream Marker, you can POST an object that matches the [Stream Marker schema](../objects/objects.md#stream-marker) with an HTTP header of ```Content-Type: application/json```. Only the ```id```, ```name```, and ```percentage``` fields will be used. ```name``` will come from the marker you received in the last GET request you made for the stream.
+Update the User's current place in a Stream. To update a Stream Marker, you can POST an object that matches the [Stream Marker schema](../objects/stream_marker.md) with an HTTP header of ```Content-Type: application/json```. Only the ```id```, ```name```, and ```percentage``` fields will be used. ```name``` will come from the marker you received in the last GET request you made for the stream.
 
 The purpose of a Stream Marker is _not_ to allow a user to scroll a stream on one device and see the scroll happen on another device in realtime. A stream marker should only be updated when a user has stopped scrolling (i.e. the stream's position hasn't changed in multiple seconds) or when the app is being closed. Please make sure your code understands our [rate limit headers](../authentication/limits.md#response-headers) so if the rate limits for this endpoint change in the future your app handles this gracefully.
 

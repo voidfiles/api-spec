@@ -1,6 +1,6 @@
 ## Stream Marker
 
-Stream markers allows a User's position in a stream of Posts to be synced between multiple App.net clients. Then when you go from the browser to your phone, you're stream is right where you left off. The current stream marker will be included in the [response envelope]() from any stream that returns Posts.
+Stream markers allows a User's position in a stream of Posts to be synced between multiple App.net clients. Then when you go from the browser to your phone, you're stream is right where you left off. The current stream marker will be included in the [response envelope](../responses.md#response-envelopes) from any stream that returns Posts.
 
 ### Example Stream Marker
 

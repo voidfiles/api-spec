@@ -1,12 +1,12 @@
 # Objects
 
-* [Users](user) are the central object that takes actions in the App.net API.
-* [Posts](post) are the central message of the App.net API.
-* [Entities](entities) are links, tags, and mentions in Posts and User descriptions.
-* [Streams](stream) are real-time, filterable view of all Posts and actions happening on App.net
-* [Stream Markers](stream_marker) allow a User's position in a Stream of posts to be saved and synced between Apps.
-* [Filters](filter) allow you to only receive Posts you want from our Stream API.
-* [Interactions](interactions) show what other Users have done with your Posts (replies, starred, reposted, etc).
+* [Users](user.md) are the central object that takes actions in the App.net API.
+* [Posts](post.md) are the central message of the App.net API.
+* [Entities](entities.md) are links, tags, and mentions in Posts and User descriptions.
+* [Streams](stream.md) are real-time, filterable view of all Posts and actions happening on App.net
+* [Stream Markers](stream_marker.md) allow a User's position in a Stream of posts to be saved and synced between Apps.
+* [Filters](filter.md) allow you to only receive Posts you want from our Stream API.
+* [Interactions](interactions.md) show what other Users have done with your Posts (replies, starred, reposted, etc).
 
 ## Notes on data formats
 
