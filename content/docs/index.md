@@ -10,14 +10,14 @@ Please submit feedback to us — feel free to comment on commits, open issues, o
 imperfect in many ways.** In particular, we're not done implementing all of the endpoints that you see here, and sometimes what we
 have written differs from this documentation. If you're running in to issues, drop us a line and we'll try to help.
 
-**If you're submitting your application to one of Apple's App Stores, be sure you follow the special instructions for modifying your login flow in the [Authentication](/appdotnet/api-spec/blob/master/auth.md) section or your app will be rejected.**
+**If you're submitting your application to one of Apple's App Stores, be sure you follow the special instructions for modifying your login flow in the [Authentication](authentication/auth/) section or your app will be rejected.**
 
 ## Table of Contents
 
-* [Object definitions](objects)
-* [Resource definitions](/appdotnet/api-spec/blob/master/resources/README.md)
-* [Authentication](/appdotnet/api-spec/blob/master/auth.md)
-* [Web Intents](/appdotnet/api-spec/blob/master/intents.md)
+* [Object definitions](objects/)
+* [Resource definitions](resources/)
+* [Authentication](authentication/auth/)
+* [Web Intents](intents)
 
 ## Wait, I wanted a syndication protocol that can do X, Y and Z!
 
