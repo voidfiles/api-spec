@@ -1,0 +1,440 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="streams">Streams</h1>
+
+<p><strong>These features are still highly experimental. If you make use of them, please idle in our <a href="https://www.hipchat.com/garqCaGOZ">developer chat room</a> so you can report bugs and we can communicate updates.</strong></p>
+
+<h2 id="general-information">General Information</h2>
+
+<h3 id="basic-use">Basic Use</h3>
+
+<p>A Stream is a real-time, ordered collection of messages. A message will always be a <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">response envelope</a>. If you are receiving a message about an object, the <code>data</code> key will contain that object. Some actions (like following a user) will contain extra information in the <code>meta</code> key.</p>
+
+<p>There are 3 different kinds of Streams, but they all follow the same pattern:</p>
+
+<ul>
+<li>
+    <p>Public stream: A Stream containing all public activity. <strong>It must be accessed with an <a href="/appdotnet/api-spec/blob/master/auth.md#app-access-token-flow">App access token</a></strong>.</p>
+  </li>
+  <li>
+    <p>Coming soon:</p>
+    <ul>
+<li>User stream: A Stream for a single User’s view of App.net. This is a Stream version of the [Retrieve a User’s personalized stream]
+(/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-a-users-personalized-stream) endpoint. It is very useful for client
+based Apps that need a single User’s Stream. <strong>It must be accessed with a User access token</strong>.</li>
+      <li>App stream: A Stream for Apps to request multiple Users Streams at once. It is very useful for server based Apps that need the
+streams of lots of users. <strong>It must be accessed with an App access token</strong>.</li>
+    </ul>
+</li>
+</ul><p>Since memory and bandwidth is not unlimited, each Stream has associated limits. App.net maintains a buffer of messages to send to a
+client, but if that buffer fills, your Stream will be disconnected. Please ensure that you are only requesting streams of data that
+you can actually process.</p>
+
+<h3 id="filters">Filters</h3>
+
+<p>Streams will give you lots of data, much of which your application may not want. A <a href="../objects/filter.md">Filter</a> can be passed to the <a href="#create-a-stream">stream creation endpoint</a> to control what messages are actually delivered to your App by our servers.</p>
+
+<h3 id="response-format">Response Format</h3>
+
+<p>A Stream is a long-lived HTTP connection that enables clients to receive messages in near real-time from App.net.</p>
+
+<p>When a Stream is established, App.net will send response that includes the <code>endpoint</code> that the app can use to consume the newly created stream. You may pass ?purge=1 if you do not wish to receive any messages previously queued up for this stream.</p>
+
+<p>Once connected to the stream endpoint, the response will be encoded using HTTP <code>Transfer-Encoding: chunked</code>.</p>
+
+<p>The Stream contains frames separated by <code>\r\n</code>. For example:</p>
+
+<pre><code>HELLO\r\nWORLD!!!\r\n
+</code></pre>
+
+<h4 id="control-message">Control Message</h4>
+
+<p>A control message is a JSON object that gives the client important information about the current Stream. For instance, if the buffer
+is getting too full, the client will receive a control message with that warning. A control message will always have <code>control</code>
+as a key in the object so it is easy to distinguish from a Post.</p>
+
+<h2 id="get-current-tokens-streams">Get current token’s Streams</h2>
+
+<p>Return the <a href="../objects/stream.md">Streams</a> for the current token.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/streams</p>
+</blockquote>
+
+<h3 id="parameters">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>key</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>Only retrieve the stream that matches the given key</td>
+        </tr></tbody>
+</table><h3 id="example">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/streams?key=rollout_stream
+<code>js
+{
+    "data": [
+        {
+            "endpoint": "https://stream-channel.app.net...",
+            "filter": {
+                "clauses": [
+                    {
+                        "field": "/data/entities/hashtags/*/name",
+                        "object_type": "post",
+                        "operator": "contains",
+                        "value": "rollout"
+                    }
+                ],
+                "id": "1",
+                "match_policy": "include_any",
+                "name": "Posts about rollouts"
+            },
+            "id": "1",
+            "object_types": [
+                "post"
+            ],
+            "type": "long_poll",
+            "key": "rollout_stream"
+        },
+        ...
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "2",
+        "min_id": "1",
+        "more": false
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="create-a-stream">Create a Stream</h2>
+
+<p>Create a <a href="../objects/stream.md">Stream</a> for the current token.</p>
+
+<p>Send a JSON document that matches the  <a href="../objects/stream.md">stream schema</a> with an HTTP header of <code>Content-Type: application/json</code>. Currently, the only keys we use from your JSON will be <code>object_types</code>, <code>type</code> and <code>filter_id</code>. If you don’t want to specify a filter, omit <code>filter_id</code>.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-1">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/streams</p>
+</blockquote>
+
+<h3 id="data">Data</h3>
+
+<p>A JSON object representing the stream to create. See <a href="../objects/stream.md">the stream object</a> for more information. Specify <code>filter_id</code> instead of <code>filter</code> if you want to filter this stream. (Omit the <code>id</code> and <code>endpoint</code> parameters).&lt;/td&gt;</p>
+
+<h3 id="example-1">Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/streams</p>
+
+  <p>Content-Type: application/json</p>
+
+  <p>DATA {“object_types”: [“post”], “type”: “long_poll”, “id”: “1”, “filter_id”: “1”, “key”: “rollout_stream”}
+<code>js
+{
+    "data": {
+        "endpoint": "https://stream-channel.app.net...",
+        "filter": {
+            "clauses": [
+                {
+                    "field": "/data/entities/hashtags/*/name",
+                    "object_type": "post",
+                    "operator": "contains",
+                    "value": "rollout"
+                }
+            ],
+            "id": "1",
+            "match_policy": "include_any",
+            "name": "Posts about rollouts"
+        },
+        "id": "1",
+        "object_types": [
+            "post"
+        ],
+        "type": "long_poll",
+        "key": "rollout_stream"
+    },
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="delete-all-of-the-current-users-streams">Delete all of the current user’s Streams</h2>
+
+<p>Delete all <a href="../objects/stream.md">Streams</a> for the current token. It returns the deleted Streams on success.</p>
+
+<p><em>Remember, access tokens can not be passed in a HTTP body for <code>DELETE</code> requests. Please refer to the <a href="/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests">authentication documentation</a>.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-2">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/streams</p>
+</blockquote>
+
+<h3 id="data-1">Data</h3>
+
+<p>None.</p>
+
+<h3 id="example-2">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/streams
+<code>js
+{
+    "data": [
+        {
+            "endpoint": "https://stream-channel.app.net...",
+            "filter": {
+                "clauses": [
+                    {
+                        "field": "/data/entities/hashtags/*/name",
+                        "object_type": "post",
+                        "operator": "contains",
+                        "value": "rollout"
+                    }
+                ],
+                "id": "1",
+                "match_policy": "include_any",
+                "name": "Posts about rollouts"
+            },
+            "id": "1",
+            "object_types": [
+                "post"
+            ],
+            "type": "long_poll"
+        },
+        ...
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "2",
+        "min_id": "1",
+        "more": false
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-a-stream">Retrieve a Stream</h2>
+
+<p>Returns a specific <a href="../objects/stream.md">Stream</a> object.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-3">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/streams/[streams_id]</p>
+</blockquote>
+
+<h3 id="parameters-1">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>streams_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The stream id</td>
+        </tr></tbody>
+</table><h3 id="example-3">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/streams/1
+<code>js
+{
+    "data": {
+        "endpoint": "https://stream-channel.app.net...",
+        "filter": {
+            "clauses": [
+                {
+                    "field": "/data/entities/hashtags/*/name",
+                    "object_type": "post",
+                    "operator": "contains",
+                    "value": "rollout"
+                }
+            ],
+            "id": "1",
+            "match_policy": "include_any",
+            "name": "Posts about rollouts"
+        },
+        "id": "1",
+        "object_types": [
+            "post"
+        ],
+        "type": "long_poll"
+    },
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="delete-a-stream">Delete a Stream</h2>
+
+<p>Delete a <a href="../objects/stream.md">Stream</a>. The Stream must belong to the current User. It returns the deleted Stream on success.</p>
+
+<p><em>Remember, access tokens can not be passed in a HTTP body for <code>DELETE</code> requests. Please refer to the <a href="/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests">authentication documentation</a>.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-4">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/streams/[stream_id]</p>
+</blockquote>
+
+<h3 id="data-2">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>stream_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The stream id</td>
+        </tr></tbody>
+</table><h3 id="example-4">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/streams/1
+<code>js
+{
+    "data": {
+        "endpoint": "https://stream-channel.app.net...",
+        "filter": {
+            "clauses": [
+                {
+                    "field": "/data/entities/hashtags/*/name",
+                    "object_type": "post",
+                    "operator": "contains",
+                    "value": "rollout"
+                }
+            ],
+            "id": "1",
+            "match_policy": "include_any",
+            "name": "Posts about rollouts"
+        },
+        "id": "1",
+        "object_types": [
+            "post"
+        ],
+        "type": "long_poll"
+    },
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+        </div>
+      </div>
+    </div>
+</html>

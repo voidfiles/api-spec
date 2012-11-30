@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="appnet-stream-api-spec">App.net Stream API Spec</h1>
+
+<p>This is a living, working document. We’re in the early implementation stages of this, and we’d like your feedback, suggestions and ideas. There’s nothing here that’s going to blow your mind — yet. But that doesn’t mean this is all there’s going to be — please help us make this into something much bigger than it currently is.</p>
+
+<p>Please submit feedback to us — feel free to comment on commits, open issues, open pull requests, etc.</p>
+
+<h2 id="very-important-warning">Very Important Warning</h2>
+
+<p><strong>As we’ve started to open up the API to people as part of our early alpha program, it’s important to note that this documentation is
+imperfect in many ways.</strong> In particular, we’re not done implementing all of the endpoints that you see here, and sometimes what we
+have written differs from this documentation. If you’re running in to issues, drop us a line and we’ll try to help.</p>
+
+<p><strong>If you’re submitting your application to one of Apple’s App Stores, be sure you follow the special instructions for modifying your login flow in the <a href="authentication/auth/">Authentication</a> section or your app will be rejected.</strong></p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul>
+<li><a href="objects/">Object definitions</a></li>
+  <li><a href="resources/">Resource definitions</a></li>
+  <li><a href="authentication/auth/">Authentication</a></li>
+  <li><a href="intents">Web Intents</a></li>
+</ul><h2 id="wait-i-wanted-a-syndication-protocol-that-can-do-x-y-and-z">Wait, I wanted a syndication protocol that can do X, Y and Z!</h2>
+
+<p>We’re thinking about the best way to do this. It’s something we’re interested in providing, but since we’ve gotta start somewhere, we decided it would be best to start with an API defined in terms of things that the majority of developers are already familiar with.</p>
+
+<p>We want to think big with you. What would you like to see?</p>
+
+<h2 id="rff--requests-for-feedback">RFF — Requests for Feedback</h2>
+
+<p>From time to time we’ll ask for feedback on specific parts of the spec in particular. Right now, focus your mental energy on:</p>
+
+<ul>
+<li>Object definitions, specifically annotation definitions.</li>
+  <li>Data export APIs. These are very, very important to us. If you were writing a backup tool, what would you want to see?</li>
+  <li>What do you think is missing?</li>
+</ul><h2 id="how-do-i-get-involved">How do I get involved?</h2>
+
+<p>Open an issue! Submit a pull request! If you have ideas, let us know. Don’t hold back — we want to hear your voice.</p>
+
+<h2 id="your-hosts">Your hosts</h2>
+
+<ul>
+<li>
+<a href="http://ber.gd">Bryan Berg</a> (<a href="http://github.com/berg">github.com/berg</a>, <a href="http://twitter.com/berg">@berg</a>, bryan@ber.gd)</li>
+  <li>Mark Thurman (<a href="http://github.com/mthurman">github.com/mthurman</a>, mthurman@gmail.com)</li>
+  <li>
+<a href="http://alexkessinger.net">Alex Kessinger</a> (<a href="http://github.com/voidfiles">github.com/voidfiles</a>, <a href="http://twitter.com/voidfiles">@voidfiles</a>, voidfiles@gmail.com)</li>
+  <li>Brian Armstrong (<a href="http://github.com/mxml-barmstrong">github.com/mxml-barmstrong</a>)</li>
+</ul>
+        </div>
+      </div>
+    </div>
+</html>

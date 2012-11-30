@@ -1,0 +1,738 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="annotations">Annotations</h1>
+
+<p>Annotations are metadata that are attached to Users or to Posts when they are created. This allows developers and users to add extra information to the post without interfering with the text content of the Post. They also allow developers to attach machine readable information about a user to the user object. Annotations will enable developers to build complex posts and new systems on top of the current App.net infrastructure.</p>
+
+<p>We’re really excited to be launching this feature and appreciate any feedback on the following document. Please <a href="https://github.com/appdotnet/api-spec/issues">open a github issue</a> to contribute to this document.</p>
+
+<h2 id="concretely-what-are-annotations">Concretely, what are annotations</h2>
+
+<p>Let’s say I’m at a restaurant eating a great dinner, but instead of just telling my followers about this restaurant I want them to be able to see a map of where it is. My Post could include geographic information about the address for the restaurant and then clients that support this geographic annotation could show the restaurant on a map (in addition to showing my post). If the restaurant is on <a href="http://www.opentable.com">OpenTable</a>, I could include an annotation indicating that and my followers could see the menu and make a reservation in their own App.net client. Annotations are what power complex posts with maps, pictures, videos, etc.</p>
+
+<h2 id="as-a-developer-why-should-i-use-annotations">As a developer, why should I use annotations</h2>
+
+<p>To build amazing things. This feature enables new ideas to be built without having to create a brand new API or ecosystem to support the idea. This is the plumbing that will enable new kinds of clients that aren’t just about microblogging.</p>
+
+<p>Annotations are how App.net will do geographic information, attaching media to posts, and lots of other things that our 3rd party developers will create.</p>
+
+<h2 id="how-do-i-use-annotations">How do I use annotations</h2>
+
+<h3 id="as-a-non-developer">As a non-developer</h3>
+
+<p>Right now, we’re still working with developers to build out this system. As App.net clients and apps are developed that support annotations, we’ll be updating everyone on App.net.</p>
+
+<h3 id="as-a-developer">As a developer</h3>
+
+<p>First here are some of the more technical details of annotations:</p>
+
+<ul>
+<li>Each annotation can be thought of as a dictionary or JSON object.</li>
+  <li>Each User or Post is allowed at most 8192 bytes worth of annotations (in total, when serialized as JSON).</li>
+  <li>Post Annotations are immutable and can only be added to a Post at creation time.</li>
+  <li>User Annotations are mutable and can be updated at any time. Because they are mutable, each User can only have one annotation of each “type” (unlike Post annotations).</li>
+</ul><h4 id="annotation-format">Annotation format</h4>
+
+<p>In general, annotations are a list of objects that have a <code>type</code> and a <code>value</code>.</p>
+
+<p><code>js
+[
+    {
+        "type": "com.example.awesome",
+        "value": {
+            "annotations work": "beautifully"
+        }
+    }
+]
+</code></p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>type</code></td>
+        <td>string</td>
+        <td>A string that looks like a reversed domain name to identify the data format for this annotation. <em>There is no authentication or authorization performed on this field. Just because you create annotations with the type <code>com.example.awesome</code> does not imply you are the only one that is using that namespace or that the <code>value</code> will match the format you expect.</em>
+</td>
+    </tr>
+<tr>
+<td><code>value</code></td>
+        <td>object</td>
+        <td>A complex object containing the metadata for this annotation. <em>Be extremely careful with this data, except for well known annotations, no validation is performed on this field.</em>
+</td>
+    </tr>
+</table><h5 id="post-annotation-format">Post Annotation format</h5>
+
+<p><code>js
+{
+    "annotations": [
+        {
+            "type": "com.example.awesome",
+            "value": {
+                "annotations work": "beautifully"
+            }
+        }
+    ],
+    "created_at": "2012-08-30T23:30:14Z",
+    "entities": {
+        "hashtags": [],
+        "links": [],
+        "mentions": []
+    },
+    "html": "&lt;span itemscope=\"https://app.net/schemas/Post\"&gt;first annotation post&lt;/span&gt;",
+    "id": "1",
+    "num_replies": 0,
+    "num_reposts": 0,
+    "num_stars": 0,
+    "source": {
+        "link": "https://join.app.net/",
+        "name": "App.net"
+    },
+    "text": "first annotation post",
+    "thread_id": "1255",
+    "user": {...},
+    "you_reposted": false,
+    "you_starred": false
+}
+</code></p>
+
+<p>The <code>post.annotations</code> field will be a list of individual annotation objects.</p>
+
+<h5 id="user-annotation-format">User Annotation format</h5>
+
+<p>User annotations are meant to provide more information about the user. <strong>They are not meant to be an arbitrary data store for apps</strong>. For example, if a user has a homepage, a blog, or a handle on a different social network, that information belongs in the User annotation.</p>
+
+<p><code>js
+{
+    "id": "1", // note this is a string
+    "username": "mthurman",
+    "name": "Mark Thurman",
+    "description": { ... },
+    "timezone": "US/Pacific",
+    "locale": "en_US",
+    "avatar_image": { ... },
+    "cover_image": { ... },
+    "type": "human",
+    "created_at": "2012-07-16T17:23:34Z",
+    "counts": { ... },
+    "follows_you": false,
+    "you_follow": true,
+    "you_muted": false,
+    "annotations": [
+        {
+            "type": "net.app.core.directory.blog",
+            "value": {
+                "url": "http://myawesomeblog.com"
+            }
+        }
+    ]
+}
+</code></p>
+
+<p>The <code>user.annotations</code> field will be a list of individual annotation objects.</p>
+
+<h4 id="creating-annotations">Creating annotations</h4>
+
+<p>Annotations are currently live in the API.</p>
+
+<p>To create Post annotations you must give App.net a well-formed JSON encoded post that matches the <a href="objects/post.md">Post schema</a>. Please see the <a href="https://github.com/appdotnet/api-spec/blob/master/resources/posts.md#create-a-post">Create Post</a> documentations for more information.</p>
+
+<p>To add or update User annotations, you <a href="https://github.com/appdotnet/api-spec/blob/master/resources/users.md#update-a-user">Update a user profile</a> and pass in the annotations you want to add or update. To delete an annotation, omit the <code>value</code> key for the annotation type you want to delete. For example, to delete a user’s blog url, specify <code>{"type": "net.app.core.directory.blog"}</code>.</p>
+
+<h4 id="displaying-annotations">Displaying annotations</h4>
+
+<p>Every client can choose if/how it chooses to display annotations. As stated above be very careful when consuming this data and <strong>do not assume that it follows a specific schema.</strong> Treat data in annotations as untrusted data. Program defensively: your app should not crash or otherwise throw an error if it receives a string where there is usually a dictionary, etc. App.net will coordinate with the community to define schemas for common annotation formats. They will live under the <code>net.app.core.*</code> namespace. This is the only restricted annotation namespace. Any annotation in this namespace must be validated by the API against a <a href="#core-annotations">published schema</a>. Outside of this namespace, developers may create annotations in either the <code>net.app.[username]</code> namespace or a reversed-domain namespace of their choosing.</p>
+
+<p>Since annotations can be up to 8192 bytes, they are not included with posts by default. When you make a request for posts or users, you can include the parameter <code>include_annotations=1</code> to receive all annotations object (or just <code>include_user_annotations=1</code> or  <code>include_post_annotations=1</code>). See <a href="https://github.com/appdotnet/api-spec/blob/master/resources/posts.md#general-parameters">general Post parameters</a> for more information.</p>
+
+<h1 id="annotations-formats">Annotations formats</h1>
+
+<p>Since annotations are just launching, we invite the community to propose schemas and collaborate on them. App.net is currently working with the community to define common schemas for things like photos, other media, and geographic data. To propose these formats, please <a href="https://github.com/appdotnet/api-spec/issues">open an issue</a> and tag it with the <code>annotations</code> label.</p>
+
+<p>Some annotations are core to the platform and their schemas will be <a href="#core-annotations">published below</a>. Other schemas may be useful across multiple App.net apps, but not be “core” to the platform. The community has started a page on the <a href="https://github.com/appdotnet/api-spec/wiki/Annotations">App.net API wiki</a> to catalog these common non-core annotations.</p>
+
+<p>We will be defining core annotations soon for the following types of data:</p>
+
+<ul>
+<li>Media enclosures, e.g., photos, video, etc.</li>
+  <li>Long-form content</li>
+  <li>Attribution and source</li>
+  <li>Additional content license grants, where users can opt in to Creative Commons licensing, etc., if desired.</li>
+</ul><p>Developers are invited to create ad-hoc annotations for data not well represented here; if possible, care should be taken not to overlap with existing annotations. If possible, Posts with ad-hoc annotations designed to address edge-cases in well-known annotations should include both the well-known annotation and only the augmented parts in the ad-hoc annotation.</p>
+
+<h2 id="core-annotations">Core Annotations</h2>
+
+<h3 id="post">Post</h3>
+
+<ul>
+<li>
+<a href="#crosspost">Crosspost</a>: net.app.core.crosspost</li>
+  <li>
+<a href="#embedded-media">Embedded Media</a>: net.app.core.oembed</li>
+  <li>
+<a href="#geolocation">Geolocation</a>: net.app.core.geolocation</li>
+  <li>
+<a href="#language">Language</a>: net.app.core.language</li>
+</ul><h3 id="user">User</h3>
+
+<ul>
+<li>
+<a href="#blog">Blog URL</a>: net.app.core.directory.blog</li>
+  <li>
+<a href="#facebook">Facebook Id</a>: net.app.core.directory.facebook</li>
+  <li>
+<a href="#homepage">Homepage</a>: net.app.core.directory.homepage</li>
+  <li>
+<a href="#twitter">Twitter Username</a>: net.app.core.directory.twitter</li>
+  <li>
+<a href="#geolocation">Geolocation</a>: net.app.core.geolocation</li>
+</ul><h3 id="blog">Blog</h3>
+
+<blockquote>
+  <p>net.app.core.directory.blog</p>
+</blockquote>
+
+<p>A pointer to the user’s blog.</p>
+
+<h4 id="example">Example</h4>
+
+<p><code>js
+{
+    "type": "net.app.core.directory.blog",
+    "value": {
+        "url": "http://myawesomeblog.com",
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>url</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>A valid URL pointing to the User's blog.</td>
+    </tr>
+</table><h3 id="crosspost">Crosspost</h3>
+
+<blockquote>
+  <p>net.app.core.crosspost</p>
+</blockquote>
+
+<p>The crosspost annotation is meant to specify the original or canonical source of a Post on App.net from somewhere else on the web.</p>
+
+<h4 id="example-1">Example</h4>
+
+<p><code>js
+{
+    "type": "net.app.core.crosspost",
+    "value": {
+        "canonical_url": "https://twitter.com/AppDotNet/status/234705338849443840",
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>canonical_url</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>A valid URL pointing to the source of the original content.</td>
+    </tr>
+</table><h3 id="embedded-media">Embedded Media</h3>
+
+<blockquote>
+  <p>net.app.core.oembed</p>
+</blockquote>
+
+<p>The embedded media annotation specifies an image, video, or other rich content that should be displayed with this post. It uses the <a href="http://oembed.com">JSON oEmbed specification</a>. We only support the <code>photo</code>, <code>video</code>, and <code>rich</code> oEmbed types.</p>
+
+<p>We highly recommend providing the <code>embeddable_url</code> attribute so other clients can request different oEmbed details for this object from the original oEmbed provider (if there is one).</p>
+
+<h4 id="examples">Examples</h4>
+
+<h5 id="photo">Photo</h5>
+
+<p><code>js
+{
+    "type": "net.app.core.oembed",
+    "value": {
+        "version": "1.0",
+        "type": "photo",
+        "width": 240,
+        "height": 160,
+        "title": "ZB8T0193",
+        "url": "http://farm4.static.flickr.com/3123/2341623661_7c99f48bbf_m.jpg",
+        "author_name": "Bees",
+        "author_url": "http://www.flickr.com/photos/bees/",
+        "provider_name": "Flickr",
+        "provider_url": "http://www.flickr.com/",
+        "embeddable_url": "http://www.flickr.com/photos/bees/2341623661/"
+    }
+}
+</code></p>
+
+<h5 id="video">Video</h5>
+
+<p>```js
+{
+    “type”: “net.app.core.oembed”,
+    “value”: {
+        “version”: “1.0”,
+        “type”: “video”,
+        “provider_name”: “YouTube”,
+        “provider_url”: “http://youtube.com/”,
+        “width”: 425,
+        “height”: 344,
+        “title”: “Amazing Nintendo Facts”,
+        “author_name”: “ZackScott”,
+        “author_url”: “http://www.youtube.com/user/ZackScott”,
+        “html”:
+            “&lt;object width="425" height="344"&gt;
+                &lt;param name="movie" value="http://www.youtube.com/v/M3r2XDceM6A&amp;fs=1"&gt;&lt;/param&gt;
+                &lt;param name="allowFullScreen" value="true"&gt;&lt;/param&gt;
+                &lt;param name="allowscriptaccess" value="always"&gt;&lt;/param&gt;
+                &lt;embed src="http://www.youtube.com/v/M3r2XDceM6A&amp;fs=1"
+                    type="application/x-shockwave-flash" width="425" height="344"
+                    allowscriptaccess="always" allowfullscreen="true"&gt;&lt;/embed&gt;
+            &lt;/object&gt;”,
+        “embeddable_url”: “http://youtube.com/watch?v=M3r2XDceM6A”
+    }
+}</p>
+
+<p>```</p>
+
+<h5 id="rich">Rich</h5>
+
+<p>```js
+{
+    “type”: “net.app.core.oembed”,
+    “value”: {
+        “provider_url”: “http://soundcloud.com”,
+        “description”: “Listen to Merenti - La Karambaa by M\u00e9renti | Create, record and share the sounds you create anywhere to friends, family and the world with SoundCloud, the world’s largest community of sound creators.”,
+        “title”: “Merenti - La Karambaa by M\u00e9renti”,
+        “html”: “&lt;iframe width="500" height="166" scrolling="no" frameborder="no" src="http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F6733249&amp;show_artwork=true&amp;maxwidth=900"&gt;&lt;/iframe&gt;”,
+        “author_name”: “M\u00e9renti”,
+        “height”: 166,
+        “width”: 500,
+        “thumbnail_url”: “http://i1.sndcdn.com/artworks-000003051440-mm2z46-t500x500.jpg?d95e793”,
+        “thumbnail_width”: 500,
+        “version”: “1.0”,
+        “provider_name”: “SoundCloud”,
+        “type”: “rich”,
+        “thumbnail_height”: 500,
+        “author_url”: “http://soundcloud.com/mrenti”
+        “embeddable_url”: “http://soundcloud.com/mrenti/merenti-la-karambaa”
+    }
+}</p>
+
+<p>```
+#### Fields</p>
+
+<p><strong>To correspond with the oEmbed spec, this annotation accepts keys that are not specified below.</strong></p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>type</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>
+<code>photo</code>, <code>video</code>, or <code>rich</code> corresponding to the oEmbed type.</td>
+    </tr>
+<tr>
+<td><code>version</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>Must be <code>1.0</code>.</td>
+    </tr>
+<tr>
+<td><code>width</code></td>
+        <td>Required</td>
+        <td>integer</td>
+        <td>The width in pixels needed to display the embeddable content.</td>
+    </tr>
+<tr>
+<td><code>height</code></td>
+        <td>Required</td>
+        <td>integer</td>
+        <td>The height in pixels needed to display the embeddable content.</td>
+    </tr>
+<tr>
+<td><code>url</code></td>
+        <td>Required if <code>type="photo"</code>
+</td>
+        <td>string</td>
+        <td>The source URL for the image.</td>
+    </tr>
+<tr>
+<td><code>html</code></td>
+        <td>Required if <code>type="video"</code> or <code>type="rich"</code>
+</td>
+        <td>string</td>
+        <td>The HTML to display the rich or video content. It should have no margins or padding. App.net does <strong>no validation</strong> of of this field. Please program defensively. You may wish to load this in an off-domain iframe to avoid XSS vulnerabilities.</td>
+    </tr>
+<tr>
+<td><code>embeddable_url</code></td>
+        <td>Optional (but recommended)</td>
+        <td>string</td>
+        <td>A URL that can be given to an oEmbed provider to recreate the oEmbed data contained in this annotation. This is useful so other clients can get updated information or retrieve a different sized embedding through an oEmbed endpoint.</td>
+    </tr>
+<tr>
+<td><code>title</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>A title for this embedded content.</td>
+    </tr>
+<tr>
+<td><code>author_name</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>The author of this embedded content.</td>
+    </tr>
+<tr>
+<td><code>author_url</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>The URL for the author of this embedded content.</td>
+    </tr>
+<tr>
+<td><code>provider_name</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>The service that provides this embedded content.</td>
+    </tr>
+<tr>
+<td><code>provider_url</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>The URL for the service that provides this embedded content.</td>
+    </tr>
+<tr>
+<td><code>cache_age</code></td>
+        <td>Optional</td>
+        <td>integer</td>
+        <td>How long (in seconds) should clients cache the embedded content.</td>
+    </tr>
+<tr>
+<td><code>thumbnail_url</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>A URL to an image that represents this resource. If this parameter is specified, <code>thumbnail_height</code> and <code>thumbnail_width</code> must also be present.</td>
+    </tr>
+<tr>
+<td><code>thumbnail_height</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>The height of the thumbnail image. If this parameter is specified, <code>thumbnail_url</code> and <code>thumbnail_width</code> must also be present.</td>
+    </tr>
+<tr>
+<td><code>thumbnail_width</code></td>
+        <td>Optional</td>
+        <td>string</td>
+        <td>The height of the thumbnail image. If this parameter is specified, <code>thumbnail_height</code> and <code>thumbnail_url</code> must also be present.</td>
+    </tr>
+</table><h3 id="facebook">Facebook</h3>
+
+<blockquote>
+  <p>net.app.core.directory.facebook</p>
+</blockquote>
+
+<p>A pointer to the user’s Facebook account.</p>
+
+<h4 id="example-2">Example</h4>
+
+<p><code>js
+{
+    "type": "net.app.core.directory.facebook",
+    "value": {
+        "id": "244611465578667",
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>id</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>A Facebook user id representing the App.net User.</td>
+    </tr>
+</table><h3 id="geolocation">Geolocation</h3>
+
+<blockquote>
+  <p>net.app.core.geolocation</p>
+</blockquote>
+
+<p>The geolocation annotation is meant to specify a geographic point on the Earth. It is not meant to specify:</p>
+
+<ul>
+<li>a human place (city, building, park, “San Francisco”, “The Mission”, “The Moscone Center”). We’re investigating how to efficiently provide this data in the core api.</li>
+  <li>paths, regions, or complex geographic shapes. We recommend using a common schema (like <a href="http://www.geojson.org/">GeoJSON</a>) in your own annotation if you need this kind of solution.</li>
+</ul><h4 id="examples-1">Examples</h4>
+
+<p>Just the required parameters:
+<code>js
+{
+    "type": "net.app.core.geolocation",
+    "value": {
+        "latitude": 74.0064,
+        "longitude": 40.7142
+    }
+}
+</code></p>
+
+<p>With all optional parameters:
+<code>js
+{
+    "type": "net.app.core.geolocation",
+    "value": {
+        "latitude": 74.0064,
+        "longitude": 40.7142,
+        "altitude": 4400,
+        "horizontal_accuracy": 100,
+        "vertical_accuracy": 100,
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>latitude</code></td>
+        <td>Required</td>
+        <td>decimal</td>
+        <td>The latitude of the geographic location in decimal degrees. Must range from -90 (the South Pole) to 90 (the North Pole).</td>
+    </tr>
+<tr>
+<td><code>longitude</code></td>
+        <td>Required</td>
+        <td>decimal</td>
+        <td>The longitude of the geographic location in decimal degrees. Must range from -180 to 180.</td>
+    </tr>
+<tr>
+<td><code>altitude</code></td>
+        <td>Optional</td>
+        <td>decimal</td>
+        <td>The altitude (in meters) of the geographic location. Can be negative.</td>
+    </tr>
+<tr>
+<td><code>horizontal_accuracy</code></td>
+        <td>Optional</td>
+        <td>decimal</td>
+        <td>The horizontal accuracy (in meters) of the instrument providing this geolocation point. Must be &gt;= 0.</td>
+    </tr>
+<tr>
+<td><code>vertical_accuracy</code></td>
+        <td>Optional</td>
+        <td>decimal</td>
+        <td>The vertical accuracy (in meters) of the instrument providing this geolocation point. Must be &gt;= 0.</td>
+    </tr>
+</table><h3 id="homepage">Homepage</h3>
+
+<blockquote>
+  <p>net.app.core.directory.homepage</p>
+</blockquote>
+
+<p>A pointer to the user’s homepage.</p>
+
+<h4 id="example-3">Example</h4>
+
+<p><code>js
+{
+    "type": "net.app.core.directory.homepage",
+    "value": {
+        "url": "http://thisisme.com",
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>url</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>A valid URL pointing to the User's homepage.</td>
+    </tr>
+</table><h3 id="language">Language</h3>
+
+<blockquote>
+  <p>net.app.core.language</p>
+</blockquote>
+
+<p>The language annotation allows a User to indicate what language this post was written in.</p>
+
+<h4 id="example-4">Example</h4>
+
+<p><code>js
+{
+    "type": "net.app.core.language",
+    "value": {
+        "language": "en",
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>language</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>A valid ISO 639-1 language code. Note that we only accept a subset of language codes right now. Please see <a href="https://github.com/appdotnet/api-spec/wiki/Language-codes">our current list</a> of accepted language codes. If we're missing your language, please <a href="https://github.com/appdotnet/api-spec/issues">open an issue</a>.</td>
+    </tr>
+</table><h3 id="twitter">Twitter</h3>
+
+<blockquote>
+  <p>net.app.core.directory.twitter</p>
+</blockquote>
+
+<p>A pointer to the user’s Twitter account.</p>
+
+<h4 id="example-5">Example</h4>
+
+<p><code>js
+{
+    "type": "net.app.core.directory.twitter",
+    "value": {
+        "username": "appdotnet",
+    }
+}
+</code>
+#### Fields</p>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Required?</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>username</code></td>
+        <td>Required</td>
+        <td>string</td>
+        <td>A Twitter username representing the App.net User.</td>
+    </tr>
+</table>
+        </div>
+      </div>
+    </div>
+</html>

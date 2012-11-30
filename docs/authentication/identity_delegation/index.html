@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="identity-delegation">Identity Delegation</h1>
+
+<p>The purpose of this specification is to define a method by which one App.net app is able to verifiably prove to another application that it has access to a specific user’s account without sharing any secret credentials.</p>
+
+<h2 id="definitions">Definitions</h2>
+
+<blockquote>
+  <p>Unless otherwise defined here, terms should have the same approximate usage as the OAuth 2.0 draft specification.</p>
+</blockquote>
+
+<ul>
+<li>
+<strong>delegate client</strong>: The client to which the identity delegation is made (e.g., a photo hosting service)</li>
+  <li>
+<strong>authorized client</strong>: The client wishing to make a request to the delegate client (e.g., an App.net mobile client application)</li>
+</ul><h2 id="scope">Scope</h2>
+
+<p>Intentionally not addressed in this document are the following:</p>
+
+<ul>
+<li>Authorization of delegate client to make requests to the request server on behalf of the resource owner</li>
+  <li>Discovery of delegate client <code>client_id</code>
+</li>
+  <li>Discovery of user identity endpoints</li>
+  <li>Format of user identity endpoint</li>
+</ul><h2 id="steps">Steps</h2>
+
+<ol>
+<li>
+    <p>The authorized client completes an OAuth authorization flow and obtains an access token from the resource server. This is outside the scope of this document.</p>
+  </li>
+  <li>
+    <p>The authorized client makes an authenticated POST request to the resource server OAuth token endpoint:</p>
+
+    <pre><code> POST /oauth/access_token HTTP/1.1
+ Host: alpha.app.net
+ Authorization: Bearer [access_token]
+ Content-Length: 59
+ Content-Type: application/x-www-form-urlencoded
+
+ grant_type=delegate&amp;delegate_client_id=[delegate client_id]
+</code></pre>
+
+    <p>which returns in the body of the reply:</p>
+
+    <pre><code> {"delegate_token": "[delegate token]"}
+</code></pre>
+
+    <blockquote>
+      <p>For App.net, the OAuth token endpoint is: <code>https://alpha.app.net/oauth/access_token</code></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>The authorized client makes a request to the delegate client with two additional headers, <code>Identity-Delegate-Token</code> and <code>Identity-Delegate-Endpoint</code>:</p>
+
+    <pre><code> POST /protected/resource HTTP/1.1
+ Host: delegate-client.example.com
+ Identity-Delegate-Token: [delegate_token]
+ Identity-Delegate-Endpoint: https://alpha-api.app.net/stream/0/token
+ Content-Length: 100
+ Content-Type: application/x-www-form-urlencoded
+
+ do_some_stuff=1&amp;fo_reals=1
+</code></pre>
+
+    <p>The Authorization header is purposefully not used, as another mechanism may be in place for authentication.</p>
+
+    <blockquote>
+      <p>The delegate token and delegate endpoint may also be sent as delegate_token and delegate_endpoint in the query string or POST body.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>The delegate client identifies the resource server by using the <code>Identity-Delegate-Endpoint</code> header and makes a request to that endpoint with the Authorization header set.</p>
+
+    <blockquote>
+      <p>The query string parameters <code>delegate_token</code>, <code>client_id</code> and <code>client_secret</code> may be used in place of HTTP headers if desired.</p>
+    </blockquote>
+
+    <pre><code> GET /stream/0/token HTTP/1.1
+ Host: alpha-api.app.net
+ Authorization: Basic [base64(client_id + ":" + client_secret)]
+ Identity-Delegate-Token: [delegate_token]
+</code></pre>
+
+    <p>which returns in the body of the reply:</p>
+
+    <pre><code> {
+     "data": {
+         "app": {
+             "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+             "link": "http://foo.example.com",
+             "name": "Bryan's app for testing"
+         },
+         "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+         "scopes": [
+             "follow",
+             "write_post",
+             "stream"
+         ],
+         "user": {
+             "created_at": "2012-07-30T18:57:05Z",
+             "id": "16",
+             "locale": "en_US",
+             "name": "Bryan Berg",
+             "timezone": "America/Los_Angeles",
+             "type": "human",
+             "username": "bryan"
+             [... truncated for the sake of brevity ...],
+         },
+     },
+     "meta": {
+         "code": 200
+     }
+ }
+</code></pre>
+
+    <p>The resource server replies with an implementation-dependent description of the current user, which must include the client_id the authorized client. In the case of App.net, this is the Token object of the authorizing client’s access_token as returned by the <a href="../resources/token.md#retrieve-current-token">Retrieve current Token</a> endpoint.</p>
+
+    <p>The delegate client may verify that the authorized client matches some external authentication scheme and/or list of authorized applications. If the delegate token is not valid for the delegate client’s client_id, this call will return a <code>401 Unauthorized</code>.</p>
+
+    <blockquote>
+      <p>For App.net, the identity delegation endpoint is: <code>https://alpha-api.app.net/stream/0/token</code></p>
+    </blockquote>
+  </li>
+</ol><h2 id="notes">Notes</h2>
+
+<ol>
+<li>
+<code>delegate_token</code>s are valid as long as their associated <code>access_token</code>s are valid.</li>
+  <li>The delegate client may cache the return value of the identity delegate endpoint for a short period of time.</li>
+  <li>Feedback on this draft is welcomed. Please open an issue on the <a href="https://github.com/appdotnet/api-spec/issues">api-spec GitHub repo</a>. Private or security-sensitive commentary can be sent to <a href="mailto:bryan@app.net">bryan@app.net</a>.</li>
+</ol>
+        </div>
+      </div>
+    </div>
+</html>

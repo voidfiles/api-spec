@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h2 id="filter">Filter</h2>
+
+<p>A Filter restricts a stream of messages on the server side so your client only sees what it’s interested in. <a href="stream.md">Streams</a> are currently the only way to use filters right now.</p>
+
+<p><code>js
+{
+    "clauses": [
+        {
+            "field": "/data/entities/hashtags/*/name",
+            "object_type": "post",
+            "operator": "contains",
+            "value": "rollout"
+        }
+    ],
+    "id": "1",
+    "match_policy": "include_any",
+    "name": "Posts about rollouts"
+}
+</code></p>
+
+<h3 id="filter-fields">Filter fields</h3>
+
+<table>
+<thead><tr>
+<th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+            <td>string</td>
+            <td>Primary identifier for a filter. This will be an integer, but it is always expressed as a string to avoid limitations with the way JavaScript integers are expressed.</td>
+        </tr>
+<tr>
+<td><code>name</code></td>
+            <td>string</td>
+            <td>An optional User assigned name for this filter.</td>
+        </tr>
+<tr>
+<td><code>clauses</code></td>
+            <td>list</td>
+            <td>A list of <a href="#filter-clauses">filter clauses</a> to match against. Must be non-empty.</td>
+        </tr>
+<tr>
+<td><code>match_policy</code></td>
+            <td>string</td>
+            <td>How should the clauses be joined together? One of <code>include_any</code>, <code>include_all</code>, <code>exclude_any</code>, or <code>exclude_all</code>. For example, <code>include_any</code> will include a message if it matches any of the clauses and <code>exclude_all</code> will exclude a message if it matches all of the clauses. This allows either white- or blacklist filtering.</td>
+        </tr>
+</tbody>
+</table><h3 id="filter-clauses">Filter Clauses</h3>
+
+<table>
+<thead><tr>
+<th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>object_type</code></td>
+            <td>string</td>
+            <td>What type of object does this filter operate on? Must be one of <code>post</code>, <code>star</code>, <code>user_follow</code>. </td>
+        </tr>
+<tr>
+<td><code>operator</code></td>
+            <td>string</td>
+            <td>How should <code>field</code> be matched against <code>value</code>.
+                <br><table>
+<tr>
+<th>Operator</th>
+                        <th>Description</th>
+                    </tr>
+<tr>
+<td><code>equals</code></td>
+                        <td>Does <code>field</code> equal <code>value</code>.</td>
+                    </tr>
+<tr>
+<td><code>matches</code></td>
+                        <td>Is the string <code>value</code> a substring of <code>field</code>.</td>
+                    </tr>
+<tr>
+<td><code>lt</code></td>
+                        <td>Is the integer in <code>field</code> &lt; <code>value</code>.</td>
+                    </tr>
+<tr>
+<td><code>le</code></td>
+                        <td>Is the integer in <code>field</code> ≤ <code>value</code>.</td>
+                    </tr>
+<tr>
+<td><code>gt</code></td>
+                        <td>Is the integer in <code>field</code> &gt; <code>value</code>.</td>
+                    </tr>
+<tr>
+<td><code>ge</code></td>
+                        <td>Is the integer in <code>field</code> ≥ <code>value</code>.</td>
+                    </tr>
+<tr>
+<td><code>one_of</code></td>
+                        <td>Is the <code>field</code> an element in the list <code>value</code>.</td>
+                    </tr>
+</table>
+</td>
+        </tr>
+<tr>
+<td><code>field</code></td>
+            <td>string</td>
+            <td>A <a href="#json-pointer">JSON Pointer</a> string that specifies what part of the message we should match against.</td>
+        </tr>
+<tr>
+<td><code>value</code></td>
+            <td>string, int, or list</td>
+            <td>A string, integer, or list that the message's data is compared against. Some <a href="#filter-variables">variables</a> are also accepted.</td>
+        </tr>
+</tbody>
+</table><h3 id="filter-variables">Filter variables</h3>
+
+<table>
+<thead><tr>
+<th>Value</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>$authorized_userids</code></td>
+            <td>list</td>
+            <td>A list of the current user ids who have authorized the App that is using this filter in a stream. Since this is a list, make sure you use the <code>one_of</code> operator with this variable.</td>
+        </tr></tbody>
+</table><h3 id="json-pointer">JSON Pointer</h3>
+
+<p>We use a slightly modified version of the <a href="http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-04">JSON Pointer</a> standard to specify which part of a message we should filter against. According to the spec:</p>
+
+<blockquote>
+  <p>JSON Pointer defines a string syntax for identifying a specific value within a JSON document.</p>
+</blockquote>
+
+<p>For instance, in the message:</p>
+
+<p><code>js
+{
+    "data": [
+        {
+            "id": "2", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@mthurman stop trolling",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"mthurman\" data-mention-id=\"1\"&gt;@mthurman&lt;/span&gt; stop trolling",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": "1",
+            "thread_id": "1",
+            "num_replies": 0,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "mthurman",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 9
+                }],
+                "hashtags": [{],
+                "links": []
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+        ...
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "2",
+        "min_id": "1",
+        "more": false
+    }
+}
+</code></p>
+
+<ul>
+<li>
+<code>/data/source/client_id</code> = “udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4”</li>
+  <li>
+<code>/data/entities/mentions/0/name</code> = “mthurman”</li>
+  <li>
+<code>/data/num_replies</code> = 0</li>
+</ul><p>We extend JSON pointer slightly to allow all the elements of a list to match. For example, to answer the question “Does this post contain the hashtag ‘rollout’”, you’d use a field selector like <code>/data/entities/hashtags/*/name</code>. Following the JSON Pointer spec, if you’d like to encode a literal <code>*</code> you can use <code>~2</code> instead.</p>
+        </div>
+      </div>
+    </div>
+</html>

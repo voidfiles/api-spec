@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="authentication">Authentication</h1>
+
+<p>As a developer working with App.net, you are required to follow some simple rules to ensure that the privacy and security of user data is protected. To help you achieve that, we’ve put together this document on how App.net intends to authenticate users.</p>
+
+<p>All requests to the API—authenticated or not—must be made over HTTPS. We use the <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31">OAuth 2.0 protocol</a> for API authentication, but only certain portions of the specification. For instance, we only support the use of bearer tokens as access tokens. The specification is a little dense on the standards-speak, but we encourage you to take a look. We’ll explain our specific use of OAuth 2 in this document.</p>
+
+<h2 id="initial-developer-setup">Initial Developer Setup</h2>
+
+<p>Once you have signed up as a developer, you will be able to create an app from the App.net developer dashboard. You will need to pre-register a <strong>redirection URI</strong>. This is where we will redirect users after they have successfully authorized your application.</p>
+
+<p>Once you have created an application, you will be assigned a <strong>client ID</strong> and <strong>client secret</strong>. You will use these in the authentication flow. The client ID may be publicly shared (e.g., included in a compiled binary or in the source code of a web page), but the client secret <strong>must</strong> be kept confidential.</p>
+
+<p>You authenticate to our API by use of an <strong>access token</strong>. There are two types of access tokens—client tokens and user tokens. <strong>Client tokens</strong> represent access to API resources on behalf of the application and <strong>user tokens</strong> represent access to API resources on behalf of a specific user. Some resources are only accessible to client or user tokens.</p>
+
+<p>It should go without saying, but for the sake of user privacy and security, please ensure that your App.net account has a <strong>strong password</strong>.</p>
+
+<h2 id="how-do-i-get-an-access-token">How do I get an access token?</h2>
+
+<p>If you want a <strong>user token</strong>, you must use one of these three flows:</p>
+
+<ul>
+<li>If you’re building a web application backed by a server, you probably want to use our <strong><a href="#server-side-flow">server-side flow</a></strong>. (The OAuth 2.0 internet-draft calls this the “<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-4.1">Authorization Code Flow</a>.”)</li>
+  <li>If you’re building an application without a central server, like a mobile app or a client-side Javascript app, you can use the <strong><a href="#client-side-flow">client-side flow</a></strong>. (The OAuth2 spec calls this the <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-4.2">Implicit Grant Flow</a>.)</li>
+  <li>If you’re building a native application (or an application where it is difficult to use a web browser), you may use our <a href="#password-flow">password flow</a>.</li>
+</ul><p>If you’re only interested in obtaining a <strong>client token</strong> (sometimes called an “App token”), you can use the <a href="#app-access-token-flow">app access token flow</a>. (The OAuth 2.0 internet-draft calls this this <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-4.4">Client Credentials Grant</a>.)</p>
+
+<p>We also intend to provide a SDK you can embed into your mobile applications to provide seamless authentication with App.net to your application’s users.</p>
+
+<h3 id="server-side-flow">Server-side Flow</h3>
+
+<p>This is the easiest way to get an access token—we recommend it to most users of the API. If you’re writing an app on a server using a language like  Ruby, Python, PHP, Java, etc. you should use this flow.</p>
+
+<p>You must keep your client_secret confidential. That means that you may not include it in the source code or binary of an application that you ship to end-users, even in obscured form. The <a href="#client-side-flow">client-side flow</a> is the proper flow to use in these cases.</p>
+
+<ol>
+<li>
+    <p>Direct the user that you want to authenticate to this URL:
+ <code>
+ https://alpha.app.net/oauth/authenticate
+     ?client_id=[your client ID]
+     &amp;response_type=code
+     &amp;redirect_uri=[your redirect URI]
+     &amp;scope=[scopes separated by spaces]
+</code></p>
+
+    <blockquote>
+      <p>To avoid cross-site scripting attacks, we also support the <strong>state</strong> parameter. If you include a state parameter, we will append it to the query parameters when redirecting the user to your <strong>Redirection URI</strong>.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>To comply with Apple’s App Store Guidelines, you can add the query string parameter <code>adnview=appstore</code> to hide all signup links on the authentication pages.</p>
+    </blockquote>
+
+    <p>We’ll request that the user log in to App.net and show them a permissions dialog allowing them to choose whether to authorize your application.</p>
+  </li>
+  <li>
+    <p>If the user decides to authorize your application, they will be redirected to:
+ <code>https://[your registered redirect URI]/?code=CODE</code></p>
+
+    <blockquote>
+      <p>If you included a query string in your redirect URI, the <code>code</code> parameter will be appended. Likewise, the scheme of your redirect URI will be respected, though we strongly recommend sending all traffic over HTTPS.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>On your server, your application should then make the following request:
+ <code>POST https://alpha.app.net/oauth/access_token</code></p>
+
+    <p>with URL-encoded POST body:</p>
+
+    <p><code>
+     client_id=[your client ID]
+     &amp;client_secret=[your client secret]
+     &amp;grant_type=authorization_code
+     &amp;redirect_uri=[your registered redirect URI]
+     &amp;code=[code received from redirect URI]
+</code></p>
+
+    <blockquote>
+      <p>Note: we also accept the <code>client_id</code> and <code>client_secret</code> parameters via the Authorization header, as described in <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-2.3.1">section 2.3.1 of the spec</a>.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>App.net will respond with a JSON-encoded token:
+ <code>
+{"access_token": "[user access token]"}
+</code>
+ You can use this access_token to make authenticated calls to the App.net API on behalf of a user.</p>
+  </li>
+</ol><h3 id="client-side-flow">Client-side Flow</h3>
+
+<p>If you’re building a client-side Javascript app or a mobile app that doesn’t have an associated back-end server, you’ll find that you need to take some special steps to keep your <code>client_secret</code> confidential.</p>
+
+<ol>
+<li>
+    <p>Direct the user that you want to authenticate to this URL:
+ <code>
+ https://alpha.app.net/oauth/authenticate
+     ?client_id=[your client ID]
+     &amp;response_type=token
+     &amp;redirect_uri=[your redirect URI]
+     &amp;scope=[scopes separated by spaces]
+</code></p>
+
+    <blockquote>
+      <p>To avoid cross-site scripting attacks, we also support the <strong>state</strong> parameter. If you include a state parameter, we will append it to the query parameters when redirecting the user to your <strong>Redirection URI</strong>.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>To comply with Apple’s App Store Guidelines, you can add the query string parameter <code>adnview=appstore</code> to hide all signup links on the authentication pages.</p>
+    </blockquote>
+
+    <p>We’ll request that the user log in to App.net and show them a permissions dialog allowing them to choose whether to authorize your application.</p>
+  </li>
+  <li>
+    <p>If the user decides to authorize your application, they will be redirected to:
+ <code>https://[your registered redirect URI]/#access_token=[user access token]</code></p>
+
+    <blockquote>
+      <p>If you included a query string in your redirect URI, the <code>code</code> parameter will be appended. Likewise, the scheme of your redirect URI will be respected, though we strongly recommend sending all traffic over HTTPS.</p>
+    </blockquote>
+
+    <p>The access_token will be appended to the URI in the fragment section, encoded as if it were a query string. Your client-side code should parse this for the access_token.</p>
+  </li>
+</ol><h3 id="password-flow">Password Flow</h3>
+
+<p>If you’re building a native application and want to avoid implementing a web-based authentication flow, the <a href="password_auth.md">Password Flow</a> may be appropriate. This flow requires special permission to use and comes with a bunch of extra rules and requirements to protect user security, so it’s described on <a href="password_auth.md">its own page</a>.</p>
+
+<h3 id="app-access-token-flow">App Access Token Flow</h3>
+
+<p>The App Access Token Flow is used to request a token that is tied to your application instead of a specific user. <strong>App access tokens cannot be distributed and must only be used from a server. You should consider them secret.</strong> If you would like a client (i.e. mobile) application to use an app access token, that app must connect to a server you control that stores the app access token.</p>
+
+<p>To retrieve an app access token, your app must make the following request:</p>
+
+<pre><code>POST https://alpha.app.net/oauth/access_token
+</code></pre>
+
+<p>with URL-encoded POST body:</p>
+
+<pre><code>    client_id=[your client ID]
+    &amp;client_secret=[your client secret]
+    &amp;grant_type=client_credentials
+</code></pre>
+
+<blockquote>
+  <p>Note: we also accept the <code>client_id</code> and <code>client_secret</code> parameters via the Authorization header, as described in <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-2.3.1">section 2.3.1 of the spec</a>.</p>
+</blockquote>
+
+<p>App.net will respond with a JSON-encoded token:</p>
+
+<pre><code>{"access_token": "[app access token]"}
+</code></pre>
+
+<p>You can use this access_token to make authenticated calls to the App.net API on behalf of your app.</p>
+
+<h3 id="errors">Errors</h3>
+
+<p>If an error occurs while obtaining an access token, we’ll notify you by redirecting the user to the <strong>Redirection URI</strong> with the following additional query string or fragment parameters:</p>
+
+<ul>
+<li>
+<code>error</code> — a single error code from <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-4.1.2.1">this list</a>
+</li>
+  <li>
+<code>error_description</code> — a human readable error description.</li>
+  <li>
+<code>error_uri</code> — a URI identifying a human-readable webpage with information about the error.</li>
+</ul><p>If a user is redirected to your application with an error code, you should be sure to give your user an informative error message.</p>
+
+<h3 id="scopes">Scopes</h3>
+
+<p>Scopes are how an application specifies what kind of data it wants from a User. They are specified on the initial access token request. A user will be able to see a list of the permissions you are requesting with explanations of what each of the permissions means. They will be able to authorize any permissions they choose. Your app should not assume that an access token has all the requested scopes.</p>
+
+<p>When using an OAuth token, App.net will include an extra HTTP headers so the app knows what scopes that token has authorized. For example:</p>
+
+<blockquote>
+  <p>X-OAuth-Scopes: email,follow</p>
+</blockquote>
+
+<p>means that the current token has permission to see the user’s email and to follow new users.</p>
+
+<p>Here is the current list of scopes on App.net:</p>
+
+<ul>
+<li>
+<strong>basic</strong>: see basic information about this user</li>
+  <li>
+<strong>stream</strong>: read this user’s stream</li>
+  <li>
+<strong>email</strong>: access this user’s email address</li>
+  <li>
+<strong>write_post</strong>: create a new post as this user</li>
+  <li>
+<strong>follow</strong>: add or remove follows (or mutes) for this user</li>
+  <li>
+<strong>messages</strong>: send and receive private messages as this user</li>
+  <li>
+<strong>update_profile</strong>: update a user’s name, images, and other profile information</li>
+  <li>
+<strong>export</strong>: bulk export all of this user’s App.net data. This is intended only for backup services, not day-to-day App.net client use. Users will be shown an extra warning when this scope is requested due to the sensitivity of this data.</li>
+</ul><p>The <strong>basic</strong> scope will always be granted on creation of access token, even if the token request omits it.</p>
+
+<h2 id="authenticated-api-requests">Authenticated API Requests</h2>
+
+<p>All requests to the API—authenticated or not—must be made over HTTPS.</p>
+
+<p>When making a call to one of our API resources, there are three ways to include authentication information.</p>
+
+<blockquote>
+  <p>In all of these examples, <code>[access token]</code> is the user’s access token, free of any JSON framing or query string parameters.</p>
+</blockquote>
+
+<ul>
+<li>
+    <p>Adding an Authorization header (<strong>preferred</strong>)
+  Add the following header to your request:
+  <code>Authorization: Bearer [access token]</code>
+  where <code>[access token]</code> is the value of the user’s access token.</p>
+
+    <p>Here’s an example:
+  ```bash
+  curl -H ‘Authorization: Bearer [access token]’ \
+       -F ‘text=Test post’ \
+       https://alpha-api.app.net/stream/0/posts</p>
+
+    <p>```</p>
+  </li>
+  <li>
+    <p>Add <code>access_token</code> to query string
+  <code>bash
+  curl https://alpha-api.app.net/stream/0/posts/1?access_token=[access token]
+ </code></p>
+  </li>
+  <li>
+    <p>Add <code>access_token</code> to HTTP body. <em>Note: this method will only work with the <code>PUT</code>, <code>POST</code>, and <code>PATCH</code> methods. <code>GET</code> and <code>DELETE</code> do not accept an HTTP body.</em></p>
+
+    <p><code>bash
+  curl -F 'access_token=[access token]' \
+       -F 'text=Test post' \
+       https://alpha-api.app.net/stream/0/posts
+ </code></p>
+  </li>
+</ul><h2 id="how-can-i-authenticate-between-appnet-apps">How can I authenticate between App.net apps?</h2>
+
+<p>We call this Identity Delegation. The detailed <a href="identity_delegation.md">Identity Delegation
+specification</a> has its own page.</p>
+        </div>
+      </div>
+    </div>
+</html>

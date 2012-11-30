@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="appnet-client-application-authentication-with-passwords">App.net client application authentication with passwords</h1>
+
+<p>This is referred to as the Resource Owner Password Credential flow in the OAuth 2.0 spec. However, in order to protect the integrity of <code>client_secret</code>s, we require the use of a separate token to be included with flows.</p>
+
+<p>This flow is useful for obtaining an access token authorized for specific scopes when pushing the user into a browser-based flow is impractical for technical or user-experience reasons.</p>
+
+<h2 id="important-notes">Important notes</h2>
+
+<p><strong>Security of user accounts is the most important thing.</strong> When in doubt, err on the side of securing user password information, rather than optimizing for user experience.</p>
+
+<p><strong>Your application must be specifically approved to use this flow.</strong> To obtain authorization, please email password-auth@app.net from your user account’s email address and include your application’s <code>client_id</code>, your username, and an explanation of your situation.</p>
+
+<h2 id="additional-rules">Additional rules</h2>
+
+<blockquote>
+  <p>Some of these rules might limit what you can do with your app. Please do not attempt to circumvent them, or we will disable your application token. That may sound harsh, but it is of utmost importance that we protect the integrity of the service and the security of user accounts.</p>
+</blockquote>
+
+<ol>
+<li>
+<strong>NEVER</strong> store user password information, no matter how securely. Users should be able to disable access to your application at any time by revoking authorization. Access tokens are designed not to expire unless users take explicit action, so there is no need to build in a mechanism to reauthenticate that would require storing passwords.</li>
+  <li>Do not send user password information over the network, except to the prescribed App.net OAuth endpoint.</li>
+  <li>
+<strong>NEVER</strong> log user password information, even debug logging to your app or device’s console. It is too easy to accidentally leak password information this way.</li>
+  <li>These flows should only be used in cases where browser-based authentication is impractical. For one-off applications, shell scripts, please use the pre-generated access token available in the “Apps” section of App.net.</li>
+  <li>Users must have a way to see which scopes are being requested by an application. This can be behind a “more info” button, but must at least be exposed on the login screen, before users are required to enter their password information to coninue.</li>
+  <li>By default, <strong>users will receive an email each time they authorize an application with this flow</strong>, listing the name of the application, the scopes requested and the time that authorization was performed.</li>
+  <li>If an error is returned from the OAuth endpoint, it MUST be displayed to users verbatim.</li>
+  <li>If these rules are updated, application developers must make reasonable attempts to comply with new regulations wherever possible.</li>
+</ol><h2 id="procedure">Procedure</h2>
+
+<p>Once approved, it’s pretty straightforward:</p>
+
+<ol>
+<li>
+    <p>From your client, make a request to the token endpoint:</p>
+
+    <pre><code> POST https://alpha.app.net/oauth/access_token
+</code></pre>
+
+    <p>with URL-encoded POST body:</p>
+
+    <pre><code>  client_id=[your client ID]
+ &amp;password_grant_secret=[your password grant secret, not your client secret]
+ &amp;grant_type=password
+ &amp;username=[user's email or username]
+ &amp;password=[user's password]
+ &amp;scope=[scopes separated by spaces]
+</code></pre>
+
+    <blockquote>
+      <p>Note: The use of <code>password_grant_secret</code> diverges from the OAuth 2.0 specificaion. <code>password_grant_secret</code> is a special token that we’ll send you when your use of the password flow is approved.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>If the authorization was successful, App.net will respond with a JSON-encoded token:</p>
+
+    <pre><code> {"access_token": "[user access token]"}
+</code></pre>
+
+    <p>You can use this access_token to make authenticated calls to the App.net API on behalf of a user.</p>
+  </li>
+  <li>
+    <p>If authentication failed or there was another error, App.net will respond with an error:</p>
+
+    <pre><code> {"error": "Authentication failed"}
+</code></pre>
+
+    <p>If the <code>error_text</code> key is present in this dictionary, you <strong>MUST</strong> show a modal dialog or equivalent containing this text. If possible, you should include value of the <code>error_title</code> key as a title in your dialog.</p>
+  </li>
+</ol>
+        </div>
+      </div>
+    </div>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h2 id="stream-marker">Stream Marker</h2>
+
+<p>Stream markers allows a User’s position in a stream of Posts to be synced between multiple App.net clients. Then when you go from the browser to your phone, you’re stream is right where you left off. The current stream marker will be included in the <a href="../responses.md#response-envelopes">response envelope</a> from any stream that returns Posts.</p>
+
+<h3 id="example-stream-marker">Example Stream Marker</h3>
+
+<p>If a Stream Marker hasn’t yet been set, you will receive the following format:
+<code>js
+{
+    "name": "global",
+}
+</code></p>
+
+<p>A marker that has been set will look like this:
+<code>js
+{
+    "id": "1234",
+    "name": "global",
+    "percentage": 0,
+    "updated_at": "2012-11-09T23:35:38Z",
+    "version": "NWoZK3kTsExUV00Ywo1G5jlUKKs"
+}
+</code></p>
+
+<h3 id="stream-marker-fields">Stream Marker fields</h3>
+
+<table>
+<tr>
+<th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>id</code></td>
+        <td>string</td>
+        <td>The Post id of the Post at the top of the stream when this Stream's position was last synced.</td>
+    </tr>
+<tr>
+<td><code>name</code></td>
+        <td>string</td>
+        <td>The name of the Stream this marker is for.</td>
+    </tr>
+<tr>
+<td><code>percentage</code></td>
+        <td>integer</td>
+        <td>An optional field that indicate what percentage this post has been scrolled in the stream. It defaults to 0. This allows for very precise stream syncing but since different clients render Posts with different heights it won't be consistent across different clients.</td>
+    </tr>
+<tr>
+<td><code>updated_at</code></td>
+        <td>string</td>
+        <td>The time this marker was last updated in <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</td>
+    </tr>
+<tr>
+<td><code>version</code></td>
+        <td>string</td>
+        <td>A unique identifier updated every time this Stream Marker is updated.</td>
+    </tr>
+</table>
+        </div>
+      </div>
+    </div>
+</html>

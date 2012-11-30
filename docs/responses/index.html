@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="responses">Responses</h1>
+
+<blockquote>
+  <p>All information in this document assumes the <code>response_envelope</code> migration is active. Please refer to <a href="/appdotnet/api-spec/blob/master/migrations.md">Migrations</a> for more information.</p>
+</blockquote>
+
+<p>All responses to requests to the App.net API endpoints described in <a href="/appdotnet/api-spec/blob/master/resources/README.md#resources">Resources</a>, whether successful or not, will be returned in the same type of envelope structure. This document will describe how that envelope works as well as how it can be used for convenient purposes, such as pagination.</p>
+
+<h2 id="response-envelopes">Response Envelopes</h2>
+
+<p>The top-level response is an object containing two keys. The first key, <code>data</code>, corresponds to the actual response item requested. This may either be an object itself or a list of objects. The particular data returned is described in each endpoint’s documentation. If the request is unsuccessful (results in an error), no <code>data</code> key will be present.</p>
+
+<p>The second key present, <code>meta</code>, corresponds to an object containing additional information about the request. This object will always contain <code>code</code>, a copy of the HTTP status code that has been returned. It will also contain <a href="#pagination-metadata">pagination data</a> or <a href="objects/stream_marker.md">stream marker data</a>, when relevant.</p>
+
+<h3 id="sample-response-envelope">Sample Response Envelope</h3>
+<p><code>js
+{
+    "data": ...,
+    "meta": {
+        "code": 200,
+        "marker": {
+            "id": "1",
+            "name": "global",
+            "percentage": 0,
+            "updated_at": "2012-11-09T23:35:38Z",
+            "version": "NWoZK3kTsExUV00Ywo1G5jlUKKs"
+        },
+        "max_id": 65039,
+        "min_id": 65039,
+        "more": true
+    }
+}
+</code></p>
+
+<h2 id="jsonp">JSONP</h2>
+
+<p>We support JSONP for easy, unauthenticated cross-domain API requests with wide browser support. Normal JSON responses are wrapped in a Javascript function so they may be included in a webpage and fetched directly by the browser via a <code>script</code> tag. It is not possible to make requests to API endpoints which require authentication with JSONP.</p>
+
+<p>To use JSONP, add a <code>callback</code> parameter to the request’s query string. For example:</p>
+
+<pre><code>https://alpha-api.app.net/stream/0/posts/stream/global?callback=awesome
+</code></pre>
+
+<p>Will result in a response that looks something like this:</p>
+
+<pre><code>awesome({...})
+</code></pre>
+
+<p>When using JSONP, our servers will return a 200 status code in the HTTP response, regardless of the effective status code.</p>
+
+<p>For more information on JSONP, see the Wikipedia page for <a href="http://en.wikipedia.org/wiki/JSONP">JSONP</a>.</p>
+
+<h2 id="cors">CORS</h2>
+
+<p>We support CORS for authenticated cross-domain API requests direct from browsers. Support for CORS may vary by browser. When using CORS, you are still responsible for obtaining, storing and supplying a valid access token with each request, if access to authenticated endpoints is required. For more information on CORS, see the Wikipedia page for <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>.</p>
+
+<h2 id="error-conditions">Error Conditions</h2>
+
+<p>If the request was unsuccessful for some reason, no <code>data</code> key will be returned – the response object will only contain a <code>meta</code> object. Additional information pertaining to the type of error generated will be returned inside the <code>meta</code> object. In particular, the <code>code</code> and <code>error_message</code> keys will point out what sort of error occurred. There may also be a uniquely-identifying <code>error_slug</code> and <code>error_id</code> present that can be used to get more information about the error and which may be helpful in support requests with App.net staff.</p>
+
+<h4 id="error-slugs">Error Slugs</h4>
+
+<table>
+<thead><tr>
+<th>Slug</th>
+            <th>Relevant on</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>invalid-token</code></td>
+            <td>global</td>
+            <td>The passed OAuth token was not valid. It may have been corrupted or missing some of its data</td>
+        </tr>
+<tr>
+<td><code>not-authorized</code></td>
+            <td>global</td>
+            <td>The User for the given token has likely explicitly revoked access to your App. You may wish to reauthenticate that User.</td>
+        </tr>
+<tr>
+<td><code>token-expired</code></td>
+            <td>global</td>
+            <td>The passed token (or code) has reached the end of its lifetime. A new token will have to be generated.</td>
+        </tr>
+<tr>
+<td><code>code-used</code></td>
+            <td><a href="/appdotnet/api-spec/blob/master/auth.md#server-side-flow-ruby-python-php-java-etc">access_token</a></td>
+            <td>The passed OAuth <code>code</code> was already used to generate a token.</td>
+        </tr>
+<tr>
+<td><code>redirect-uri-required</code></td>
+            <td><a href="/appdotnet/api-spec/blob/master/auth.md#server-side-flow-ruby-python-php-java-etc">access_token</a></td>
+            <td>The call to access_token must include <code>redirect_uri</code>.</td>
+        </tr>
+</tbody>
+</table><h2 id="pagination-metadata">Pagination Metadata</h2>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>max_id</code></td>
+            <td>string</td>
+            <td>The greatest ID returned in the data set. Inclusive. This should be considered an opaque identifier that may be passed as <code>since_id</code> in the next call in order to retrieve the next set of objects.</td>
+        </tr>
+<tr>
+<td><code>min_id</code></td>
+            <td>string</td>
+            <td>The least ID returned in the data set. Inclusive. This should be considered an opaque identifier that may be passed as <code>before_id&lt;/code.
+        
+        <tr>
+<td><code>more</code></td>
+            <td>boolean</td>
+            <td>If <code>more</code> is <code>true</code>, there are more matches available for the given query than would fit within <code>count</code> objects. If <code>more</code> is <code>false</code>, there are no more matches available.</td>
+        </tr></code>
+</td>
+</tr>
+</tbody>
+</table>
+        </div>
+      </div>
+    </div>
+</html>

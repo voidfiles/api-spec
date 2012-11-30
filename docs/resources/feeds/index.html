@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="feeds">Feeds</h1>
+
+<h2 id="general-information">General Information</h2>
+
+<h3 id="basic-use">Basic Use</h3>
+
+<p>Feeds describe our system for simple syndication of public posts on App.net. We currently support RSS as a syndication format. This means you should be able to use them anywhere you currently use RSS feeds.</p>
+
+<p>There are 2 different kinds of feeds, but they all follow the same pattern:</p>
+
+<ul>
+<li>Users Post feed: A feed for a single User’s public posts on App.net. This is a feed version of the <a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-created-by-a-user">Retrieve Posts created by a User</a> endpoint.</li>
+  <li>Hashtag feed: A feed containing all public Posts that are tagged with a specific hashtag. This is a feed version of the <a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-tagged-posts">Retrieve tagged Posts</a> endpoint.</li>
+</ul><p>We intend to support more feed formats and richer support for filters in the near future.</p>
+
+<p><em>Note:</em> While the URLs are similar to other API URLs feeds, they are under a different root.</p>
+
+<h3 id="filters">Filters</h3>
+
+<p>Feeds do not currently support filters or general parameters like the JSON API.</p>
+
+<h3 id="response-format">Response Format</h3>
+
+<p>All responses are returned as RSS. We are following the spec for RSS 2.0 as described in the <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 specification</a>.</p>
+
+<h2 id="retrieve-a-feed-for-a-user">Retrieve a feed for a User</h2>
+
+<p>Retrieve a <a href="#feeds">feed</a> for the User <a href="http://alpha.app.net/voidfiles">@voidfiles</a>. This endpoint is similar to the ‘<a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-created-by-a-user">Retrieve Posts created by a User</a>’ endpoint.</p>
+
+<h3 id="url">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/feed/rss/users/@username/posts</p>
+</blockquote>
+
+<h3 id="example">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/feed/rss/users/@voidfiles/posts</p>
+</blockquote>
+
+<p><code>xml
+&lt;?xml version='1.0' encoding='utf-8'?&gt;
+&lt;rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"&gt;
+    &lt;channel&gt;
+        &lt;title&gt;Posts from voidfiles on App.net&lt;/title&gt;
+        &lt;link&gt;https://alpha.app.net/voidfiles&lt;/link&gt;
+        &lt;description&gt;Hi, I work at App.net&lt;/description&gt;
+        &lt;atom:link href="https://alpha-api.app.net/feed/rss/users/@voidfiles/posts" type="application/rss+xml"/&gt;
+        &lt;image&gt;
+            &lt;title&gt;Posts from voidfiles on App.net&lt;/title&gt;
+            &lt;link&gt;https://alpha.app.net/voidfiles&lt;/link&gt;
+            &lt;url&gt;https://dqdwyydysypcm.cloudfront.net/image/4/Go50UQd5N9mi_APkpQt9JAp4ZsDfMlOTnoB4P-0N5rmpFGtnro2b52yUcUr_bPbxKlxx_4EHHiujdE-RRpSB6oZd0bHGy4xKlwInNBClbebDS7DoyyPHtIK9LY5x-kQSdnPKyKhtogJxD04SGOQMLPkCasZM42nLVgZIIhcbmbBrzxNJaoRoCNOrzS1ib9fQcAwPEg&lt;/url&gt;
+        &lt;/image&gt;
+        &lt;item&gt;
+            &lt;title&gt;voidfiles: #hashtag test&lt;/title&gt;
+            &lt;description&gt;
+                &lt;span itemscope="https://join.app.net/schemas/Post"&gt;&lt;a href="https://alpha.app.net/hashtags/hashtag" itemprop="hashtag" data-hashtag-name="hashtag"&gt;#hashtag&lt;/a&gt; test&lt;/span&gt;
+            &lt;/description&gt;
+            &lt;pubDate&gt;Fri, 31 Aug 2012 17:15:31 +0000&lt;/pubDate&gt;
+            &lt;guid&gt;https://alpha.app.net/voidfiles/post/1387&lt;/guid&gt;
+            &lt;link&gt;https://alpha.app.net/voidfiles/post/1387&lt;/link&gt;
+            &lt;category&gt;hashtag&lt;/category&gt;
+        &lt;/item&gt;
+    &lt;/channel&gt;
+&lt;/rss&gt;
+</code></p>
+
+<h2 id="retrieve-a-feed-for-a-hashtag">Retrieve a feed for a hashtag</h2>
+
+<p>Retrieve a <a href="#feed">feed</a> for the specified hashtag. This endpoint is similar to the ‘<a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-tagged-posts">Retrieve tagged Posts</a>’ endpoint.</p>
+
+<h3 id="url-1">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/feed/rss/posts/tag/hashtag</p>
+</blockquote>
+
+<h3 id="example-1">Example</h3>
+<blockquote>
+  <p>GET https://alpha-api.app.net/feed/rss/posts/tag/hashtag</p>
+</blockquote>
+
+<p><code>xml
+&lt;?xml version='1.0' encoding='utf-8'?&gt;
+&lt;rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"&gt;
+    &lt;channel&gt;
+        &lt;title&gt;#hashtag - App.net&lt;/title&gt;
+        &lt;link&gt;https://alpha.app.net/hashtags/hashtag&lt;/link&gt;
+        &lt;description&gt;Posts about #hashtag&lt;/description&gt;
+        &lt;atom:link href="https://alpha-api.app.net/feed/rss/posts/tag/hashtag" type="application/rss+xml"/&gt;
+        &lt;item&gt;
+            &lt;title&gt;voidfiles: #hashtag test&lt;/title&gt;
+            &lt;description&gt;
+                &lt;span itemscope="https://join.app.net/schemas/Post"&gt;&lt;a href="https://alpha.app.net/hashtags/hashtag" itemprop="hashtag" data-hashtag-name="hashtag"&gt;#hashtag&lt;/a&gt; test&lt;/span&gt;
+            &lt;/description&gt;
+            &lt;pubDate&gt;Fri, 31 Aug 2012 17:15:31 +0000&lt;/pubDate&gt;
+            &lt;guid&gt;https://alpha.app.net/voidfiles/post/1387&lt;/guid&gt;
+            &lt;link&gt;https://alpha.app.net/voidfiles/post/1387&lt;/link&gt;
+            &lt;category&gt;hashtag&lt;/category&gt;
+        &lt;/item&gt;
+    &lt;/channel&gt;
+&lt;/rss&gt;
+</code></p>
+        </div>
+      </div>
+    </div>
+</html>

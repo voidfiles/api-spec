@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="resources">Resources</h1>
+<p>The App.net Stream API is a JSON API.</p>
+
+<p>Guiding principles are:</p>
+
+<ul>
+<li>Always return JSON. If you are using JSONP, the returned JSON will be wrapped in a function call.</li>
+  <li>Utilize HTTP error codes and methods.</li>
+  <li>In general, required parameters are in URLs; optional parameters are specified in the query string. <strong>This is not always the case.</strong>
+</li>
+  <li>If we need complex data structures from you, you should send them as a JSON string. We don’t need any more conventions for putting arrays and dictionaries directly into URL-encoded GET/POST values.</li>
+  <li>We follow a convention of including the API version number in the resource path. API calls of version 0 are subject to change throughout the process. Once we promote something to version 1, we hope to keep its implementation stable.</li>
+</ul><h2 id="hostname">Hostname</h2>
+<p>Please use https://alpha-api.app.net/ to access the APIs.</p>
+
+<h2 id="usersusersmd"><a href="users.md">Users</a></h2>
+<table width="100%">
+<thead><tr>
+<th>Description</th>
+            <th>Path</th>
+            <th width="50">HTTP Method</th>
+            <th width="50">Authentication Required?</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-multiple-users">Retrieve multiple Users</a></td>
+            <td>/stream/0/users</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-user">Retrieve a User</a></td>
+            <td>/stream/0/users/[user_id]</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#update-a-user">Update a User</a></td>
+            <td>/stream/0/users/me</td>
+            <td>PUT</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-users-avatar-image">Retrieve a User's avatar image</a></td>
+            <td>/stream/0/users/[user_id]/avatar</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-users-cover-image">Retrieve a User's cover image</a></td>
+            <td>/stream/0/users/[user_id]/cover</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#update-a-users-avatar-image">Update a User's avatar image</a></td>
+            <td>/stream/0/users/me/avatar</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#update-a-users-cover-image">Update a User's cover image</a></td>
+            <td>/stream/0/users/me/cover</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#follow-a-user">Follow a User</a></td>
+            <td>/stream/0/users/[user_id]/follow</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#unfollow-a-user">Unfollow a User</a></td>
+            <td>/stream/0/users/[user_id]/follow</td>
+            <td>DELETE</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-a-user-is-following">List users a User is following</a></td>
+            <td>/stream/0/users/[user_id]/following</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-ids-a-user-is-following">List user ids a User is following</a></td>
+            <td>/stream/0/users/[user_id]/following/ids</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-following-a-user">List users following a User</a></td>
+            <td>/stream/0/users/[user_id]/followers</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-ids-following-a-user">List user ids following a User</a></td>
+            <td>/stream/0/users/[user_id]/followers/ids</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#mute-a-user">Mute a User</a></td>
+            <td>/stream/0/users/[user_id]/mute</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#unmute-a-user">Unmute a User</a></td>
+            <td>/stream/0/users/[user_id]/mute</td>
+            <td>DELETE</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-muted-users">List muted Users</a></td>
+            <td>/stream/0/users/me/muted</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#search-for-users">Search for Users</a></td>
+            <td>/stream/0/users/search</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-who-have-reposted-a-post">List Users who have reposted a Post</a></td>
+            <td>/stream/0/posts/[post_id]/reposters</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-who-have-starred-a-post">List Users who have starred a Post</a></td>
+            <td>/stream/0/posts/[post_id]/stars</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-interactions-with-me">List User interactions with me</a></td>
+            <td>/stream/0/users/me/interactions</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+</tbody>
+</table><h2 id="tokenappdotnetapi-specblobmasterresourcestokenmd"><a href="/appdotnet/api-spec/blob/master/resources/token.md">Token</a></h2>
+<table width="100%">
+<thead><tr>
+<th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
+        </tr></thead>
+<tbody><tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/token.md#retrieve-current-token">Check current Token</a></td>
+            <td>/stream/0/token</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr></tbody>
+</table><h2 id="postsappdotnetapi-specblobmasterresourcespostsmd"><a href="/appdotnet/api-spec/blob/master/resources/posts.md">Posts</a></h2>
+<table width="100%">
+<thead><tr>
+<th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#create-a-post">Create a Post</a></td>
+            <td>/stream/0/posts</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-multiple-posts">Retrieve multiple Posts</a></td>
+            <td>/stream/0/posts</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-a-post">Retrieve a Post</a></td>
+            <td>/stream/0/posts/[post_id]</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#delete-a-post">Delete a Post</a></td>
+            <td>/stream/0/posts/[post_id]</td>
+            <td>DELETE</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-the-replies-to-a-post">Retrieve the replies to a Post</a></td>
+            <td>/stream/0/posts/[post_id]/replies</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-created-by-a-user">Retrieve Posts created by a User</a></td>
+            <td>/stream/0/users/[user_id]/posts</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#repost-a-post">Repost a Post</a></td>
+            <td>/stream/0/posts/[post_id]/repost</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#unrepost-a-post">Unrepost a Post</a></td>
+            <td>/stream/0/posts/[post_id]/repost</td>
+            <td>DELETE</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#star-a-post">Star a Post</a></td>
+            <td>/stream/0/posts/[post_id]/star</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#unstar-a-post">Unstar a Post</a></td>
+            <td>/stream/0/posts/[post_id]/star</td>
+            <td>DELETE</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-starred-by-a-user">Retrieve Posts starred by a User</a></td>
+            <td>/stream/0/users/[user_id]/stars</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-mentioning-a-user">Retrieve Posts mentioning a User</a></td>
+            <td>/stream/0/users/[user_id]/mentions</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-a-users-personalized-stream">Retrieve a User's personalized stream</a></td>
+            <td>/stream/0/posts/stream</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-a-users-unified-stream">Retrieve a User's unified stream</a></td>
+            <td>/stream/0/posts/stream/unified</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-the-global-stream">Retrieve the Global stream</a></td>
+            <td>/stream/0/posts/stream/global</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-tagged-posts">Retrieve tagged Posts</a></td>
+            <td>/stream/0/posts/tag/[hashtag]</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#update-a-stream-marker">Update a Stream Marker</a></td>
+            <td>/stream/0/posts/marker</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+</tbody>
+</table><h2 id="filtersappdotnetapi-specblobmasterresourcesfiltersmd"><a href="/appdotnet/api-spec/blob/master/resources/filters.md">Filters</a></h2>
+<table width="100%">
+<thead><tr>
+<th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#get-current-users-filters">Get current user's Filters</a></td>
+            <td>/stream/0/filters</td>
+            <td>GET</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#create-a-filter">Create a Filter</a></td>
+            <td>/stream/0/filters</td>
+            <td>POST</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#delete-all-of-the-current-users-filters">Delete all of the current user's Filters</a></td>
+            <td>/stream/0/filters</td>
+            <td>DELETE</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#retrieve-a-filter">Retrieve a Filter</a></td>
+            <td>/stream/0/filters/[filter_id]</td>
+            <td>GET</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#update-a-filter">Update a Filter</a></td>
+            <td>/stream/0/filters/[filter_id]</td>
+            <td>PUT</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#delete-a-filter">Delete a Filter</a></td>
+            <td>/stream/0/filters/[filter_id]</td>
+            <td>DELETE</td>
+        </tr>
+</tbody>
+</table><h2 id="streamsappdotnetapi-specblobmasterresourcesstreamsmdmdashexperimental">
+<a href="/appdotnet/api-spec/blob/master/resources/streams.md">Streams</a>—experimental</h2>
+<table width="100%">
+<thead><tr>
+<th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#get-current-tokens-streams">Get current tokens's Streams</a></td>
+            <td>/stream/0/streams</td>
+            <td>GET</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#create-a-stream">Create a Stream</a></td>
+            <td>/stream/0/streams</td>
+            <td>POST</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-all-of-the-current-tokens-streams">Delete all of the current tokens's Stream</a></td>
+            <td>/stream/0/streams</td>
+            <td>DELETE</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#retrieve-a-stream">Retrieve a Stream</a></td>
+            <td>/stream/0/streams/[streams_id]</td>
+            <td>GET</td>
+        </tr>
+<tr>
+<td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-a-stream">Delete a Stream</a></td>
+            <td>/stream/0/streams/[streams_id]</td>
+            <td>DELETE</td>
+        </tr>
+</tbody>
+</table>
+        </div>
+      </div>
+    </div>
+</html>

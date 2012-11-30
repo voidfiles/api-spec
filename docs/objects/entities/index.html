@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h2 id="entities">Entities</h2>
+<p>Entities allow users and applications to provide rich text formatting for posts. They provide common formatting for mentions and hashtags but they also allow links to be embedded with anchor text which gives more context. Each entity type is a list with 0 or more entities of the same type.</p>
+
+<p>Entities are designed to be very simple to render — they should relatively easily translate into <a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/NSAttributedString_Class/Reference/Reference.html"><code>NSAttributedString</code></a> objects and the like.</p>
+
+<p>Usually entities are extracted from the Post text by App.net’s servers. We allow users to specify some entities at Post creation time. Please refer to the <a href="#user-specified-entities">user specified entites</a> documentation for more information.</p>
+
+<p>Ranges specified by entities may be adjacent, but may not overlap.</p>
+
+<p>All of the following examples are about the following post:</p>
+
+<blockquote>
+  <p>@berg FIRST post on this new site #newsocialnetwork</p>
+</blockquote>
+
+<h3 id="mentions">Mentions</h3>
+<p>Bring another user’s attention to your post. A mention starts with <code>@</code>.</p>
+
+<p><code>js
+"mentions": [{
+    "name": "berg",
+    "id": "2",
+    "pos": 0,
+    "len": 5,
+}]
+</code></p>
+<table>
+<tr>
+<th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>name</code></td>
+        <td>string</td>
+        <td>The username being mentioned (doesn't include '@').</td>
+    </tr>
+<tr>
+<td><code>id</code></td>
+        <td>string</td>
+        <td>The user id of the mentioned user.</td>
+    </tr>
+<tr>
+<td><code>pos</code></td>
+        <td>integer</td>
+        <td>The 0 based index where this entity begins <code>text</code> (include @).</td>
+    </tr>
+<tr>
+<td><code>len</code></td>
+        <td>integer</td>
+        <td>The length of the substring in <code>text</code> that represents this mention. Since <code>@</code> is included, <code>len</code> will be the length of the <code>name</code> + 1.</td>
+    </tr>
+</table><h3 id="hashtags">Hashtags</h3>
+<p>Tag a post about a specific subject. A hashtag starts with <code>#</code>.</p>
+
+<p><code>js
+"hashtags": [{
+    "name": "newsocialnetwork",
+    "pos": 34,
+    "len": 17
+}]
+</code></p>
+<table>
+<tr>
+<th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>name</code></td>
+        <td>string</td>
+        <td>The text of the hashtag (not including #).</td>
+    </tr>
+<tr>
+<td><code>pos</code></td>
+        <td>integer</td>
+        <td>The 0 based index where this entity begins <code>text</code> (include #).</td>
+    </tr>
+<tr>
+<td><code>len</code></td>
+        <td>integer</td>
+        <td>The length of the substring in <code>text</code> that represents this hashtag. Since <code>#</code> is included, <code>len</code> will be the length of the <code>name</code> + 1.</td>
+    </tr>
+</table><h3 id="links">Links</h3>
+<p>Link to another website.</p>
+
+<p><code>js
+"links": [{
+    "text": "this new site",
+    "url": "https://join.app.net"
+    "pos": 20,
+    "len": 13
+}]
+</code></p>
+<table>
+<tr>
+<th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+<tr>
+<td><code>text</code></td>
+        <td>string</td>
+        <td>The anchor text to be linked (could be a url).</td>
+    </tr>
+<tr>
+<td><code>url</code></td>
+        <td>string</td>
+        <td>The destination url (only http or https accepted).</td>
+    </tr>
+<tr>
+<td><code>pos</code></td>
+        <td>integer</td>
+        <td>The 0 based index where this entity begins <code>text</code>.</td>
+    </tr>
+<tr>
+<td><code>len</code></td>
+        <td>integer</td>
+        <td>The length of the substring in <code>text</code> that represents this link.</td>
+    </tr>
+</table><h3 id="user-specified-entites">User Specified Entites</h3>
+
+<p>Entities are automatically extracted from the post text but there are 2 cases where users and apps can set the entities on a post.</p>
+
+<h4 id="mentions-in-machine-only-posts">Mentions in machine only posts</h4>
+
+<p><a href="post.md#machine-only-posts">Machine only posts</a> don’t have any text so entities cannot be extracted. We allow you to specify up to 10 users (by username or id) who can be mentioned in a machine only post. A machine only post with mentions is treated as a <a href="../resources/posts.md#general-parameters">directed post</a> to those users. You should not pass the <code>pos</code> or <code>len</code> keys in these mentions. Please see the example:</p>
+
+<p><code>js
+{
+    "annotations": ...,
+    "machine_only": true,
+    "entities": {
+        "mentions": [
+            {
+                "name": "mthurman"
+            },
+            {
+                "id": "1"
+            },
+            ...
+        ]
+    }
+}
+</code></p>
+
+<h4 id="links-with-custom-anchor-text">Links with custom anchor text</h4>
+
+<p>If you’d like to provide a link without including the entire URL in your post text or user description, you can specify a custom link at Post creation time or User update time. If you provide any links, <strong>App.net will not extract any links on the server</strong>. Mentions and hashtags will still be extracted and your provided links must not overlap with these extracted entities. So you <strong>cannot</strong> have a custom link around a hashtag or mention.</p>
+
+<p>To prevent phishing, any link where the anchor text differs from the destination domain will be followed by the domain of the link target. These extra characters will not count against the 256 character Post limit.</p>
+
+<p>The <code>text</code> attribute of a link should be omitted as it will always be filled in from the post text.</p>
+
+<h5 id="example">Example</h5>
+
+<p>If you created the following post:</p>
+
+<p><code>js
+{
+    "text": "I love this website!",
+    "entities": {
+        "links": [
+            {
+                "pos": 7,
+                "len": 12,
+                "url": "https://alpha.app.net"
+            }
+        ]
+    }
+}
+</code></p>
+
+<p>App.net will store and return:</p>
+
+<p><code>js
+{
+    "text": "I love this website [alpha.app.net]!",
+    "entities": {
+        "links": [
+            {
+                "pos": 7,
+                "len": 12,
+                "url": "https://alpha.app.net"
+            }
+        ]
+    },
+    ...
+}
+</code></p>
+        </div>
+      </div>
+    </div>
+</html>

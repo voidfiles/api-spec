@@ -1,0 +1,1628 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="posts">Posts</h1>
+
+<p>Posts are currently the best implemented objects on the system. If you’re looking to play around with part of the API, start here.</p>
+
+<h2 id="general-parameters">General parameters</h2>
+
+<p>Requests for streams of Posts can be filtered by passing query string parameters along with the request.</p>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td>
+<code>min_id</code> (<em><a href="#deprecating-min_id-and-max_id">Deprecating</a></em>)</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The minimum Post id to return (the response *will include* this post id if it is valid).</td>
+        </tr>
+<tr>
+<td>
+<code>max_id</code> (<em><a href="#deprecating-min_id-and-max_id">Deprecating</a></em>)</td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The maximum Post id to return (the response *will include* this post id if it is valid)</td>
+        </tr>
+<tr>
+<td><code>since_id</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>Include posts with ids greater than this id. This value is not guaranteed to be a Post id and should come from the <code>max_id</code> parameter of a previous request's <a href="/appdotnet/api-spec/blob/master/responses.md#pagination-metadata">pagination metadata</a>. The response <strong>will not include</strong> this id.</td>
+        </tr>
+<tr>
+<td><code>before_id</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>Include posts with ids smaller than this id. This value is not guaranteed to be a Post id and should come from the <code>min_id</code> parameter of a previous request's <a href="/appdotnet/api-spec/blob/master/responses.md#pagination-metadata">pagination metadata</a>. The response <strong>will not include</strong> this id.</td>
+        </tr>
+<tr>
+<td><code>count</code></td>
+            <td>Optional</td>
+            <td>integer</td>
+            <td>The number of Posts to return, up to a maximum of 200. Sorry, negative counts are temporarily disabled.</td>
+        </tr>
+<tr>
+<td><code>include_muted</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should posts from muted users be included? Defaults to false except when you specifically request a Post from a muted user or when you specifically request a muted user's stream.</td>
+        </tr>
+<tr>
+<td><code>include_deleted</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should deleted posts be included? Defaults to true.</td>
+        </tr>
+<tr>
+<td><code>include_directed_posts</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should posts directed at people I don't follow be included? A directed post is a post that starts with 1 or more @mentions. A machine only post with mentions is also considered a directed post. Defaults to false for "My Stream" and true everywhere else.</td>
+        </tr>
+<tr>
+<td><code>include_machine</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should <a href="../objects/post.md#machine-only-posts">machine only posts</a> be included? (Default: <code>False</code>)</td>
+        </tr>
+<tr>
+<td><code>include_annotations</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should the <a href="../objects/annotations.md">user and post annotations</a> be included in the Post? (Default: <code>False</code>)</td>
+        </tr>
+<tr>
+<td><code>include_post_annotations</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should the <a href="../objects/annotations.md">post annotations</a> be included in the Post? (Default: <code>False</code>)</td>
+        </tr>
+<tr>
+<td><code>include_user_annotations</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should the <a href="../objects/annotations.md">user annotations</a> be included in the Post? (Default: <code>False</code>)</td>
+        </tr>
+<tr>
+<td><code>include_starred_by</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should a sample of Users who have starred a Post be returned with the Post objects? Please see the <a href="../objects/post.md">Post schema</a>. (Default: <code>False</code>)</td>
+        </tr>
+<tr>
+<td><code>include_reposters</code></td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should a sample of Users who have reposted a Post be returned with the Post objects? Please see the <a href="../objects/post.md">Post schema</a>. (Default: <code>False</code>)</td>
+        </tr>
+<tr>
+<td>
+<code>include_user</code> (<em>Coming soon</em>)</td>
+            <td>Optional</td>
+            <td>integer (0 or 1)</td>
+            <td>Should the nested User object be included in the Post? (Default depends upon the endpoint)</td>
+        </tr>
+</tbody>
+</table><h3 id="deprecating-minid-and-maxid">Deprecating min_id and max_id</h3>
+
+<p>After thinking through the pagination use cases more, we don’t think <code>min_id</code> and <code>max_id</code> are the most useful parameters. We’re planning on deprecating them in favor of <code>since_id</code> and <code>before_id</code>. If you have a use case that would benefit from inclusive parameters (<code>min_id</code> and <code>max_id</code>), please <a href="https://github.com/appdotnet/api-spec/issues">let us know</a>.</p>
+
+<h2 id="sorting-posts">Sorting Posts</h2>
+
+<p>Post id is the ordering field for multiple posts (not <code>created_at</code>). <code>created_at</code> is meant to be displayed to users, not to sort posts. This also makes pagination with <code>since_id</code> and <code>before_id</code> more straightforward. Posts are presently always returned in reverse chronological order (newest to oldest). As a result, the Posts endpoints will always return the newest posts that meet the requested criteria e.g. before_id and count.</p>
+
+<h2 id="create-a-post">Create a Post</h2>
+<p>Create a new <a href="../objects/post.md">Post</a> object. Mentions and hashtags will be parsed out of the post text, as will bare URLs.</p>
+
+<p>You can also create a Post by sending JSON in the HTTP post body that matches the <a href="../objects/post.md">post schema</a> with an HTTP header of <code>Content-Type: application/json</code>. Currently, the only keys we use from your JSON will be <code>text</code>, <code>reply_to</code>, <code>machine_only</code>, <code>annotations</code> and <code>entities</code>. To create complex posts (including <a href="../objects/post.md#machine-only-posts">machine only posts</a>), you must use the JSON interface. See the <a href="#json-example">JSON example</a> below. If you would like to specify your own entities, please refer to the <a href="../objects/entities.md#user-specified-entities">user specified entites</a> documentation.</p>
+
+<p><em>Note: You cannot reply to a repost. Please reply to the parent Post.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="required-scopes">Required Scopes</h3>
+
+<ul>
+<li><code>write_post</code></li>
+</ul><h3 id="url">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts</p>
+</blockquote>
+
+<h3 id="data">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The raw text of the post</td>
+        </tr>
+<tr>
+<td><code>reply_to</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The id of the post that this new post is replying to</td>
+        </tr>
+</tbody>
+</table><h3 id="example">Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/posts</p>
+
+  <p>DATA text=%40berg+FIRST+post+on+this+new+site+%23newsocialnetwork
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on this new site &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 0,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": []
+        },
+        "you_reposted": false,
+        "you_starred": false
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h3 id="json-example">JSON Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/posts?include_post_annotations=1</p>
+
+  <p>Content-Type: application/json</p>
+
+  <p>DATA ‘{“text”: “@berg FIRST post on this new site #newsocialnetwork”, “annotations”: [{“type”: “net.app.core.geolocation”, “value”: {“latitude”: 74.0064, “longitude”: 40.7142}}]}’
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on this new site &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 0,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "annotations": [
+            {
+                "type": "net.app.core.geolocation",
+                "value": {
+                    "latitude": 74.0064,
+                    "longitude": 40.7142
+                }
+            }
+        ],
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": []
+        },
+        "you_reposted": false,
+        "you_starred": false
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-multiple-posts">Retrieve multiple Posts</h2>
+<p>Returns multiple Posts requested by id. At most 200 posts can be requested.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-1">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts</p>
+</blockquote>
+
+<h3 id="parameters">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>ids</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>A comma separated list of Post ids to retrieve.</td>
+        </tr></tbody>
+</table><h3 id="example-1">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts?ids=1,2,3
+<code>js
+{
+    "data": [
+        {
+            "id": "1", // note this is a string
+            ...
+        },
+        {
+            "id": "2",
+            ...
+        },
+        {
+            "id": "3",
+            ...
+        },
+    ],
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-a-post">Retrieve a Post</h2>
+<p>Returns a specific <a href="../objects/post.md">Post</a>.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-2">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]</p>
+</blockquote>
+
+<h3 id="parameters-1">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><h3 id="example-2">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts/1
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 3,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": [{
+                "text": "this new site",
+                "url": "https://join.app.net"
+                "pos": 20,
+                "len": 13
+            }]
+        },
+        "you_reposted": false,
+        "you_starred": false
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="delete-a-post">Delete a Post</h2>
+
+<p>Delete a <a href="../objects/post.md">Post</a>. The current user must be the same user who created the Post. It returns the deleted Post on success.</p>
+
+<p><em>Remember, access tokens can not be passed in a HTTP body for <code>DELETE</code> requests. Please refer to the <a href="/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests">authentication documentation</a>.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-3">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]</p>
+</blockquote>
+
+<h3 id="data-1">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><h3 id="example-3">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/posts/1
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 3,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": [{
+                "text": "this new site",
+                "url": "https://join.app.net"
+                "pos": 20,
+                "len": 13
+            }]
+        },
+        "you_reposted": false,
+        "you_starred": false
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-the-replies-to-a-post">Retrieve the replies to a Post</h2>
+
+<p>Retrieve all the <a href="../objects/post.md">Post</a>s that are in the same thread as this post. The specified Post does not have to be the root of the conversation. Additionally, the specified Post will be included in the response at the appropriate place.</p>
+
+<p><strong>This endpoint would be more accurately named <code>stream/0/posts/[post_id]/thread</code> and may be renamed in a later API version.</strong></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-4">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]/replies</p>
+</blockquote>
+
+<h3 id="parameters-2">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-4">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts/1/replies
+<code>js
+{
+    "data": [
+        {
+            "id": "2", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@mthurman stop trolling",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"mthurman\" data-mention-id=\"1\"&gt;@mthurman&lt;/span&gt; stop trolling",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": "1",
+            "thread_id": "1",
+            "num_replies": 0,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "mthurman",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 9
+                }],
+                "hashtags": [{],
+                "links": []
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+        ...
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "2",
+        "min_id": "1",
+        "more": false
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-posts-created-by-a-user">Retrieve Posts created by a User</h2>
+
+<p>Get the most recent <a href="../objects/post.md">Post</a>s created by a specific <a href="../objects/user.md">User</a> in reverse post order.</p>
+
+<p><em>Note: the User object is not returned for these Posts.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-5">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/users/[user_id]/posts</p>
+</blockquote>
+
+<h3 id="parameters-3">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>user_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The user id. If the user id is <code>me</code> the current authenticated user will be used. You can also specify <code>@username</code> as a <code>user_id</code>.</td>
+        </tr></tbody>
+</table><p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-5">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/users/1/posts
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "47",
+        "min_id": "1"
+        "more": true
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="repost-a-post">Repost a Post</h2>
+
+<p>Share a Post (specified with post_id) with your followers. Reposts are intended solely as a routing mechanism; a repost’s text, entities, and html are “inherited” from the original Post. If a user would like to quote, comment on, or alter a Post, reposts are not the solution. Reposts are meant to be pointers to another Post.</p>
+
+<p>For compatibility with clients who don’t wish to show reposts specially, we set a repost’s text field to be <code>&gt;&gt; @username: original text</code>. <strong>Thus the text field could actually be slightly longer than 256 characters.</strong> Most clients will probably want to display the original post (with some indication that is has been reposted). When rendering a repost, we recommend you pull most of your information from <code>repost_of</code> and make use of the <code>repost_of.reposters</code> field.</p>
+
+<ul>
+<li>Reposts cannot be reposted, starred, or replied to. Please take those actions on the parent post.</li>
+  <li>Reposts do not show up in the hashtags, mentions or global streams.</li>
+  <li>A repost of Post A will only show up in a User’s stream if they have not seen Post A (or another repost of Post A) in a reasonable amount of time (currently 1 week).</li>
+</ul><blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-6">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]/repost</p>
+</blockquote>
+
+<h3 id="data-2">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><h3 id="example-6">Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/posts/1/repost
+<code>js
+{
+    "data": {
+        "id": "2",
+        "user": {
+            ...
+        },
+        "created_at": "2012-09-13T21:26:19Z",
+        "entities": {
+            "hashtags": [],
+            "links": [],
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 3,
+                "len": 5
+            }]
+        },
+        "text": "&gt;&gt; @berg: a really insightful post that must be shared with the world"
+        "html": "&gt;&gt; &lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt;: a really insightful post that must be shared with the world",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "2",
+        "num_replies": 0,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "you_reposted": false,
+        "you_starred": false
+        "repost_of": {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "a really insightful post that must be shared with the world",
+            "html": "a really insightful post that must be shared with the world",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 1,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [],
+                "hashtags": [],
+                "links": []
+            },
+            "you_reposted": true,
+            "you_starred": false
+        },
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="unrepost-a-post">Unrepost a Post</h2>
+
+<p>Given the original <code>post_id</code>, delete the current user’s repost. <em>Note: this same functionality can be accomplished by <a href="#delete-a-post">deleting using the repost’s post_id</a></em>.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-7">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]/repost</p>
+</blockquote>
+
+<h3 id="data-3">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><h3 id="example-7">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/posts/1/repost
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 3,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": [{
+                "text": "this new site",
+                "url": "https://join.app.net"
+                "pos": 20,
+                "len": 13
+            }]
+        },
+        "you_reposted": false,
+        "you_starred": false
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="star-a-post">Star a Post</h2>
+
+<p>Save a given Post to the current User’s stars. This is just a “save” action, not a sharing action. A User’s stars are visible to others, but they are not automatically added to your followers’ streams.</p>
+
+<p><em>Note: A repost cannot be starred. Please star the parent Post.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-8">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]/star</p>
+</blockquote>
+
+<h3 id="data-4">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><h3 id="example-8">Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/posts/1/star
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 3,
+        "num_reposts": 0,
+        "num_stars": 1,
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": [{
+                "text": "this new site",
+                "url": "https://join.app.net"
+                "pos": 20,
+                "len": 13
+            }]
+        },
+        "you_reposted": false,
+        "you_starred": true
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="unstar-a-post">Unstar a Post</h2>
+
+<p>Remove a Star from a Post.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-9">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/[post_id]/star</p>
+</blockquote>
+
+<h3 id="data-5">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The post id</td>
+        </tr></tbody>
+</table><h3 id="example-9">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/posts/1/star
+<code>js
+{
+    "data": {
+        "id": "1", // note this is a string
+        "user": {
+            ...
+        },
+        "created_at": "2012-07-16T17:25:47Z",
+        "text": "@berg FIRST post on this new site #newsocialnetwork",
+        "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+        "source": {
+            "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+            "name": "Clientastic for iOS",
+            "link": "http://app.net"
+        },
+        "machine_only": false,
+        "reply_to": null,
+        "thread_id": "1",
+        "num_replies": 3,
+        "num_reposts": 0,
+        "num_stars": 0,
+        "entities": {
+            "mentions": [{
+                "name": "berg",
+                "id": "2",
+                "pos": 0,
+                "len": 5
+            }],
+            "hashtags": [{
+                "name": "newsocialnetwork",
+                "pos": 34,
+                "len": 17
+            }],
+            "links": [{
+                "text": "this new site",
+                "url": "https://join.app.net"
+                "pos": 20,
+                "len": 13
+            }]
+        },
+        "you_reposted": false,
+        "you_starred": false
+    },
+    "meta": {
+        "code": 200,
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-posts-starred-by-a-user">Retrieve Posts starred by a User</h2>
+
+<p>Get the most recent <a href="../objects/post.md">Post</a>s starred by a specific <a href="../objects/user.md">User</a> in reverse post order. Stars are a way for Users to
+save posts without rebroadcasting the Post to their followers.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-10">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/users/[user_id]/stars</p>
+</blockquote>
+
+<h3 id="parameters-4">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>user_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The user id. If the user id is <code>me</code> the current authenticated user will be used. You can also specify <code>@username</code> as a <code>user_id</code>.</td>
+        </tr></tbody>
+</table><p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-10">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/users/1/stars
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 1,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": true
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "47",
+        "min_id": "1"
+        "more": true
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-posts-mentioning-a-user">Retrieve Posts mentioning a User</h2>
+
+<p>Get the most recent <a href="../objects/post.md">Post</a>s mentioning by a specific <a href="../objects/user.md">User</a> in reverse post order.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-11">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/users/[user_id]/mentions</p>
+</blockquote>
+
+<h3 id="parameters-5">Parameters</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>user_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The user id. If the user id is <code>me</code> the current authenticated user will be used. You can also specify <code>@username</code> as a <code>user_id</code>.</td>
+        </tr></tbody>
+</table><p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-11">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/users/2/mentions
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "36",
+        "min_id": "1",
+        "more": false
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-a-users-personalized-stream">Retrieve a User’s personalized stream</h2>
+
+<p>Return the 20 most recent <a href="../objects/post.md">Post</a>s from the current User and the Users they follow.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-12">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/stream</p>
+</blockquote>
+
+<h3 id="parameters-6">Parameters</h3>
+
+<p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-12">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts/stream
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "39",
+        "min_id": "1",
+        "more": true
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-a-users-unified-stream">Retrieve a User’s unified stream</h2>
+
+<p>Return the 20 most recent <a href="../objects/post.md">Post</a>s from the current User’s <a href="#retrieve-a-users-personalized-stream">personalized stream</a> and <a href="#retrieve-posts-mentioning-a-user">mentions stream</a> merged into one stream.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-13">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/stream/unified</p>
+</blockquote>
+
+<h3 id="parameters-7">Parameters</h3>
+
+<p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-13">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts/stream/unified
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "39",
+        "min_id": "1",
+        "more": true
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="retrieve-the-global-stream">Retrieve the Global stream</h2>
+
+<p>Return the 20 most recent <a href="../objects/post.md">Post</a>s from the Global stream.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-14">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/stream/global</p>
+</blockquote>
+
+<h3 id="parameters-8">Parameters</h3>
+
+<p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-14">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts/stream/global
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "33",
+        "min_id": "1",
+        "more": true
+    }
+}
+</code>
+## Retrieve tagged Posts</p>
+</blockquote>
+
+<p>Return the 20 most recent <a href="../objects/post.md">Post</a>s for a specific hashtag.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-15">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/tag/[hashtag]</p>
+</blockquote>
+
+<h3 id="parameters-9">Parameters</h3>
+
+<p><em>See <a href="#general-parameters">General Parameters</a> for optional parameters you can use with this query.</em></p>
+
+<h3 id="example-15">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/posts/tag/newsocialnetwork
+<code>js
+{
+    "data": [
+        ...
+        {
+            "id": "1", // note this is a string
+            "user": {
+                ...
+            },
+            "created_at": "2012-07-16T17:25:47Z",
+            "text": "@berg FIRST post on this new site #newsocialnetwork",
+            "html": "&lt;span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\"&gt;@berg&lt;/span&gt; FIRST post on &lt;a href=\"https://join.app.net\" rel=\"nofollow\"&gt;this new site&lt;/a&gt; &lt;span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\"&gt;#newsocialnetwork&lt;/span&gt;.",
+            "source": {
+                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
+                "name": "Clientastic for iOS",
+                "link": "http://app.net"
+            },
+            "machine_only": false,
+            "reply_to": null,
+            "thread_id": "1",
+            "num_replies": 3,
+            "num_reposts": 0,
+            "num_stars": 0,
+            "entities": {
+                "mentions": [{
+                    "name": "berg",
+                    "id": "2",
+                    "pos": 0,
+                    "len": 5
+                }],
+                "hashtags": [{
+                    "name": "newsocialnetwork",
+                    "pos": 34,
+                    "len": 17
+                }],
+                "links": [{
+                    "text": "this new site",
+                    "url": "https://join.app.net"
+                    "pos": 20,
+                    "len": 13
+                }]
+            },
+            "you_reposted": false,
+            "you_starred": false
+        },
+    ],
+    "meta": {
+        "code": 200,
+        "max_id": "78",
+        "min_id": "1",
+        "more": false
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="update-a-stream-marker">Update a Stream Marker</h2>
+
+<p>Update the User’s current place in a Stream. To update a Stream Marker, you can POST an object that matches the <a href="../objects/stream_marker.md">Stream Marker schema</a> with an HTTP header of <code>Content-Type: application/json</code>. Only the <code>id</code>, <code>name</code>, and <code>percentage</code> fields will be used. <code>name</code> will come from the marker you received in the last GET request you made for the stream.</p>
+
+<p>The purpose of a Stream Marker is <em>not</em> to allow a user to scroll a stream on one device and see the scroll happen on another device in realtime. A stream marker should only be updated when a user has stopped scrolling (i.e. the stream’s position hasn’t changed in multiple seconds) or when the app is being closed. Please make sure your code understands our <a href="../authentication/limits.md#response-headers">rate limit headers</a> so if the rate limits for this endpoint change in the future your app handles this gracefully.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-16">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/posts/marker</p>
+</blockquote>
+
+<h3 id="data-6">Data</h3>
+
+<p>None.</p>
+
+<h3 id="example-16">Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/posts/marker</p>
+
+  <p>Content-Type: application/json</p>
+
+  <p>DATA {“name”: “global”, “id”: 2}
+<code>js
+{
+    "data": {
+        "id": "2",
+        "name": "global",
+        "percentage": 0,
+        "updated_at": "2012-11-12T20:04:58Z",
+        "version": "d95o2uzYI7q7tY7bHI4U1xBug7s"
+    },
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+        </div>
+      </div>
+    </div>
+</html>

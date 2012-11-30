@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h1 id="subscriptions">Subscriptions</h1>
+
+<p><strong>NOT YET IMPLEMENTED</strong> - still seeking comment on these from developers.</p>
+
+<h2 id="general-information">General Information</h2>
+
+<p>App.net allows Apps to subscribe to updates when data changes in our system. When an event that you’ve subscribed to happens, we’ll
+POST to a callback url that you have registered with us. That way, your App can know about the most recent data in an efficient and
+immediate way.</p>
+
+<p><em>Note: this process is sometimes called ‘WebHooks’</em></p>
+
+<h3 id="what-information-can-i-subscribe-to">What information can I subscribe to?</h3>
+
+<p>When you create a subscription, you’re telling us that you want information when an object is updated in a specific way.</p>
+
+<p>For instance you may be interested in knowing that a <strong>User</strong> started <strong>following</strong> another User. Or you may want to know
+when a <strong>User</strong> is <strong>mentioned</strong> in a Post. Or maybe you want to know when a <strong>User</strong> is <strong>replied</strong> to.</p>
+
+<p>These examples illustrate that you can receive an update when a certain <code>aspect</code> of an <code>object</code> changes.</p>
+
+<h4 id="we-currently-support-the-following-subscriptions">We currently support the following subscriptions</h4>
+
+<ul>
+<li>User
+    <ul>
+<li>follow: the subscribed to User started following a User</li>
+      <li>followed_by: a User started following the subscribed to User</li>
+      <li>mention: a Post was written that mentions the subscribed to User</li>
+      <li>profile_update: the profile of the subscribed to User was updated</li>
+      <li>post: a Post was written by the subscribed to User</li>
+      <li>replies_to: a Post was written in reply to one of the subscribed to User’s posts</li>
+    </ul>
+</li>
+</ul><h3 id="how-do-i-get-started">How do I get started?</h3>
+
+<ol>
+<li>Create an App</li>
+  <li><a href="#callback-format">Create a callback URL</a></li>
+  <li><a href="#create-a-subscription">Create a subscription</a></li>
+  <li><a href="#receive-an-update">Receive updates</a></li>
+</ol><h4 id="callback-format">Callback Format</h4>
+
+<p>A callback url is a url that your App controls that is able to receive GET and POST requests from App.net.</p>
+
+<p><em>Note: you must include the scheme (http/https) when creating a subscription.</em></p>
+
+<h5 id="subscription-creation-and-verification">Subscription creation and verification</h5>
+
+<p>When you <a href="#create-a-subscription">create a subscription</a>, App.net will submit a GET request to your callback URL to verify that you
+control it. This is based on the Pubsubhubbub challenge flow. App.net will send the following parameters to your callback URL:</p>
+
+<ul>
+<li>
+<strong>hub.mode</strong>: “subscribe”</li>
+  <li>
+<strong>hub.topic</strong>: A string representing what the app is subscribing to in the form of “object.aspect”. For example, “user.post”.</li>
+  <li>
+<strong>hub.challenge</strong>: A string randomly generated by App.net that the callback url must return before the subscription is valid.</li>
+  <li>
+<strong>hub.verify_token</strong>: The string the App provided to App.net in the subscription request.</li>
+</ul><blockquote>
+  <p>YOUR_CALLBACK_URL?hub.mode=subscribe&amp;hub.topic=user.post&amp;hub.challenge=0x12fh47djtufhdjfu85e&amp;hub.verify_token=YOUR_VERIFY_TOKEN</p>
+</blockquote>
+
+<p>We must receive a <code>200 OK</code> response from your callback url with only the <code>hub.challenge</code> in the body.</p>
+
+<blockquote>
+  <p>0x12fh47djtufhdjfu85e</p>
+</blockquote>
+
+<p>Once we verify your subscription, your original subscription request will return with a <code>201 Created</code> if successful or an
+appropriate HTTP error. If the subscription was successful, the response will include a <code>Location</code> header representing the newly
+created subscription.</p>
+
+<h5 id="receive-an-update">Receive an update</h5>
+
+<p>When you have an active subscription, if data that you subscribe to changes we will send you a POST request informing you of this
+update. These updates are notices only and will not contain the new values or data. Your app will have to decide how to response to
+this information.</p>
+
+<p>When App.net sends you updates, we will post a JSON string of the following format. <em>Note: this is a list of updates that have
+occurred</em>.</p>
+
+<p><code>js
+{
+    "data": [
+        {
+            "subscription_id": "1",
+            "object": "user",
+            "aspect": "post",
+            "object_id": "1",
+            "time": "2012-07-19T23:59:51Z"
+        },
+        {
+            "subscription_id": "2",
+            "object": "user",
+            "aspect": "mention",
+            "object_id": "3",
+            "time": "2012-07-20T00:00:31Z"
+        }
+    ],
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+
+<p>When we send your app updates, we will also include a authentication header so you can verify the update is coming from App.net and
+hasn’t been tampered. We will set </p>
+
+<p><code>X-Hub-Signature: sha1=signature</code></p>
+
+<p>where <code>signature</code> is a SHA1 signature computed with the HMAC algorithm where the request body is the data and your app’s secret
+is the key. When you receive an update, you should calculate the HMAC and return a <code>200 OK</code> if the HMAC matches. If the HMAC
+doesn’t match, return a <code>400 BAD REQUEST</code> and ignore the update.</p>
+
+<h2 id="list-subscriptions">List Subscriptions</h2>
+
+<p>List all the Subscriptions this app is currently subscribed to. <strong>This resource must be accessed with an App access token</strong>.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/subscriptions</p>
+</blockquote>
+
+<h3 id="parameters">Parameters</h3>
+
+<p>None</p>
+
+<h3 id="example">Example</h3>
+
+<blockquote>
+  <p>GET https://alpha-api.app.net/stream/0/subscriptions
+<code>js
+{
+    "data": [
+        {
+            "id": "1"
+            "object": "user",
+            "aspect": "post",
+            "callback_url": "https://example.com/webhooks/app_net",
+            "created_at": "2012-07-20T00:18:55Z"
+        },
+        {
+            "id": "2"
+            "object": "user",
+            "aspect": "mention",
+            "callback_url": "https://example.com/webhooks/app_net",
+            "created_at": "2012-07-20T00:18:56Z"
+        }
+    ],
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="create-a-subscription">Create a Subscription</h2>
+
+<p>Create a new subscription. Returns either <code>201 CREATED</code> or an error status code. Please read the <a href="#general-information">general subscription information</a> to understand the entire subscription process.
+<strong>This resource must be accessed with an App access token</strong>.</p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-1">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/subscriptions</p>
+</blockquote>
+
+<h3 id="data">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>object</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The objects your app wants subscriptions about. Currently only <code>user</code>
+</td>
+        </tr>
+<tr>
+<td><code>aspect</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>What kind of updates you want to know about. See <a href="#we-currently-support-the-following-subscriptions">our currently supported subscriptions</a>.</td>
+        </tr>
+<tr>
+<td><code>callback_url</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>A fully qualified URL that specifies where an app would like to receive updates. It can be either http or https and must not include a fragment.</td>
+        </tr>
+<tr>
+<td><code>verify_token</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>A string of at most 200 characters that will be provided to your callback url so it can distinguish multiple subscription requests at once.</td>
+        </tr>
+</tbody>
+</table><h3 id="example-1">Example</h3>
+
+<blockquote>
+  <p>POST https://alpha-api.app.net/stream/0/subscriptions</p>
+
+  <p>DATA object=user&amp;verify_token=user%3Apost&amp;aspect=post&amp;callback_url=https%3A%2F%2Fexample.com%2Fwebhooks%2Fapp_net
+<code>js
+{
+    "data": {
+        "id": "1"
+        "object": "user",
+        "aspect": "post",
+        "callback_url": "https://example.com/webhooks/app_net",
+        "created_at": "2012-07-20T00:18:55Z"
+    },
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="delete-a-subscription">Delete a Subscription</h2>
+
+<p>Delete a single subscription. Returns the deleted subscription. <strong>This resource must be accessed with an App access token</strong>.</p>
+
+<p><em>Remember, access tokens can not be passed in a HTTP body for <code>DELETE</code> requests. Please refer to the <a href="/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests">authentication documentation</a>.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-2">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/subscriptions/[subscription_id]</p>
+</blockquote>
+
+<h3 id="data-1">Data</h3>
+
+<table>
+<thead><tr>
+<th>Name</th>
+            <th>Required?</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody><tr>
+<td><code>subscription_id</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>The subscription id</td>
+        </tr></tbody>
+</table><h3 id="example-2">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/subscriptions/1
+<code>js
+{
+    "data": {
+        "id": "1"
+        "object": "user",
+        "aspect": "post",
+        "callback_url": "https://example.com/webhooks/app_net",
+        "created_at": "2012-07-20T00:18:55Z"
+    },
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+
+<h2 id="delete-all-subscription">Delete all Subscription</h2>
+
+<p>Delete all subscriptions for the authorized App. Returns a list of the deleted subscriptions.
+<strong>This resource must be accessed with an App access token</strong>.</p>
+
+<p><em>Remember, access tokens can not be passed in a HTTP body for <code>DELETE</code> requests. Please refer to the <a href="/appdotnet/api-spec/blob/master/auth.md#authenticated-api-requests">authentication documentation</a>.</em></p>
+
+<blockquote>
+  <p>This endpoint is currently migrated by the <code>response_envelope</code> migration. Please refer to the <a href="/appdotnet/api-spec/blob/master/migrations.md#current-migrations">Migrations documentation</a> for more info.</p>
+</blockquote>
+
+<h3 id="url-3">URL</h3>
+<blockquote>
+  <p>https://alpha-api.app.net/stream/0/subscriptions</p>
+</blockquote>
+
+<h3 id="data-2">Data</h3>
+
+<p>None</p>
+
+<h3 id="example-3">Example</h3>
+
+<blockquote>
+  <p>DELETE https://alpha-api.app.net/stream/0/subscriptions
+<code>js
+{
+    "data": [
+        {
+            "id": "1"
+            "object": "user",
+            "aspect": "post",
+            "callback_url": "https://example.com/webhooks/app_net",
+            "created_at": "2012-07-20T00:18:55Z"
+        },
+        {
+            "id": "2"
+            "object": "user",
+            "aspect": "mention",
+            "callback_url": "https://example.com/webhooks/app_net",
+            "created_at": "2012-07-20T00:18:56Z"
+        }
+    ],
+    "meta": {
+        "code": 200
+    }
+}
+</code></p>
+</blockquote>
+        </div>
+      </div>
+    </div>
+</html>

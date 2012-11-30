@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>A Brand New nanoc Site - </title>
+    <link rel="stylesheet" type="text/css" 
+      href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
+      media="screen">
+    <!--<link rel="stylesheet" type="text/css" href="/style.css">-->
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc 3.4.2"> 
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar content-->
+
+          <div class="well sidebar-nav">  
+            
+            <ul class="nav nav-list" id="my-collapse-nav">  
+                
+                <li class="nav-header">Getting Started</li>
+
+                <li class="nav-header">API Overview</li>
+                <ul>
+                  <li>Terms of Service</li>
+                  <li>Authentication</li>
+                  <li>Rate Limits</li>
+                  <li>Objects</li>
+                  <li>Resources</li>
+                  <li>Responses</li>
+                  <li>Versioning and Migrations</li>
+                  <li>Issue Tracker</li>
+                </ul>
+                <li class="nav-header">Authentication</li>
+                <ul>
+                  <li>Tokens</li>
+                  <li>Flows</li>
+                  <li>Passwords</li>
+                  <li>Scopes</li>
+                  <li>Rate Limits</li>
+                  <li>Identity Delegation</li>
+                </ul>
+                <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
+                <ul>
+                  <li><a href="/docs/objects/user/">User</a></li>
+                  <li><a href="/docs/objects/post/">Post</a></li>
+                  <li><a href="/docs/objects/entities/">Entities</a></li>
+                  <li><a href="/docs/objects/annotations/">Annotations</a></li>
+                  <li><a href="/docs/objects/stream/">Stream</a></li>
+                  <li><a href="/docs/objects/stream_marker/">Stream Marker</a></li>
+                  <li><a href="/docs/objects/filter/">Filter</a></li>
+                  <li><a href="/docs/objects/interactions/">Interaction</a></li>
+                </ul>
+                <li class="nav-header"><a href="/docs/resources/">Resources</a></li>
+                <ul>
+                  <li><a href="/docs/resources/token/">Token</a></li>
+                  <li><a href="/docs/resources/users/">Users</a></li>
+                  <li><a href="/docs/resources/posts/">Posts</a></li>
+                  <li><a href="/docs/resources/streams/">Streams</a></li>
+                  <li><a href="/docs/resources/filters/">Filters</a></li>
+                  <li><a href="/docs/resources/feeds/">Feeds</a></li>
+                  <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                </ul>
+            </ul>
+          </div>  
+        </div>
+ 
+        <div class="span10">
+          <!--Body content-->
+          <h2 id="stream">Stream</h2>
+
+<p>A customized view of the global stream that is streamed to the client instead of polling.</p>
+
+<p><code>js
+{
+    "endpoint": "https://stream-channel.app.net...",
+    "filter": {
+        "clauses": [
+            {
+                "field": "/data/entities/hashtags/*/name",
+                "object_type": "post",
+                "operator": "contains",
+                "value": "rollout"
+            }
+        ],
+        "id": "1",
+        "match_policy": "include_any",
+        "name": "Posts about rollouts"
+    },
+    "id": "1",
+    "object_types": [
+        "post"
+    ],
+    "type": "long_poll",
+    "key": "rollout_stream"
+}
+</code></p>
+
+<h3 id="stream-fields">Stream Fields</h3>
+
+<table>
+<thead><tr>
+<th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr></thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+            <td>string</td>
+            <td>Primary identifier for a stream. This will be an integer, but it is always expressed as a string to avoid limitations with the way JavaScript integers are expressed.</td>
+        </tr>
+<tr>
+<td><code>endpoint</code></td>
+            <td>string</td>
+            <td>The fully qualified URL the client should use to connect to this stream.</td>
+        </tr>
+<tr>
+<td><code>filter</code></td>
+            <td>object</td>
+            <td>An optional filter to apply when generating the stream.</td>
+        </tr>
+<tr>
+<td><code>object_types</code></td>
+            <td>list</td>
+            <td>A list of strings that specify the kinds of objects this stream is interested in. Must be one of <code>post</code>, <code>star</code>, <code>user_follow</code>.</td>
+        </tr>
+<tr>
+<td><code>type</code></td>
+            <td>string</td>
+            <td>A string specifying the type of stream this is. This can affect the transport method of the endpoint url as well as characteristics of the stream (how many messages it can process, how long lived it is, etc). Currently, the only option is <code>long_poll</code>.</td>
+        </tr>
+<tr>
+<td><code>key</code></td>
+            <td>string</td>
+            <td>An optional User assigned string that names this stream so it's easy to query for later. If a key is given, it must be unique for all streams created by a single token.</td>
+        </tr>
+</tbody>
+</table>
+        </div>
+      </div>
+    </div>
+</html>
