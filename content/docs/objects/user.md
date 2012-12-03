@@ -4,7 +4,7 @@ A user is the central object utilized by the App.net Stream API. They have usern
 
 ### Example User object
 
-```js
+~~~ js
 {
     "id": "1", // note this is a string
     "username": "mthurman",
@@ -64,7 +64,7 @@ A user is the central object utilized by the App.net Stream API. They have usern
         }
     ]
 }
-```
+~~~
 
 ### User fields
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>A Brand New nanoc Site - <%= @item[:title] %></title>
+    <title>App.net API Documentation - <%= @item[:title] %></title>
     <link rel="stylesheet" type="text/css" 
       href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" 
       media="screen">
@@ -11,20 +11,26 @@
     <!-- you don't need to keep this, but it's cool for stats! -->
     <meta name="generator" content="nanoc <%= Nanoc::VERSION %>"> 
   </head>
+
   <body>
+  
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span2">
+  
           <!--Sidebar content-->
-
           <div class="well sidebar-nav">  
             
             <ul class="nav nav-list" id="my-collapse-nav">  
                 
-                <li class="nav-header">Getting Started</li>
+                <li class="nav-header"><a href="/docs/">Overview</a></li>
 
-                <li class="nav-header">API Overview</li>
+                <li class="nav-header">Basics</li>
                 <ul>
+                  <li><a href="/docs/basics/responses/">Responses</a></li>
+                  <li><a href="/docs/basics/migrations/">Migrations</a></li>
+                  <li><a href="/docs/basics/rate_limits/">Rate Limits</a></li>
+                  <!--
                   <li>Terms of Service</li>
                   <li>Authentication</li>
                   <li>Rate Limits</li>
@@ -33,15 +39,18 @@
                   <li>Responses</li>
                   <li>Versioning and Migrations</li>
                   <li>Issue Tracker</li>
+                  -->
                 </ul>
-                <li class="nav-header">Authentication</li>
+                <li class="nav-header"><a href="/docs/authentication/"></a>Authentication</li>
                 <ul>
-                  <li>Tokens</li>
                   <li>Flows</li>
-                  <li>Passwords</li>
-                  <li>Scopes</li>
-                  <li>Rate Limits</li>
-                  <li>Identity Delegation</li>
+                  <ul>
+                    <li><a href="/docs/authentication/flows/server-side/">Server-side Flow</a></li>
+                    <li><a href="/docs/authentication/flows/client-side/">Client-side Flow</a></li>
+                    <li><a href="/docs/authentication/flows/password/">Password Flow</a></li>
+                    <li><a href="/docs/authentication/flows/app_access_token/">App Access Token Flow</a></li>
+                  </ul>
+                  <li><a href="/docs/authentication/identity_delegation/">Identity Delegation</a></li>
                 </ul>
                 <li class="nav-header"><a href="/docs/objects/">Objects</a></li>
                 <ul>
@@ -63,6 +72,7 @@
                   <li><a href="/docs/resources/filters/">Filters</a></li>
                   <li><a href="/docs/resources/feeds/">Feeds</a></li>
                   <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
+                  <li><a href="/docs/resources/intents/">Intents</a></li>
                 </ul>
             </ul>
           </div>  
@@ -74,4 +84,6 @@
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-affix.js"></script>
+  </body>
 </html>
