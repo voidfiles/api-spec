@@ -13,8 +13,7 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '/stylesheet/' do
-  # don’t filter or layout
+compile '/static/*' do
 end
 
 compile '*' do
@@ -29,8 +28,8 @@ compile '*' do
   end
 end
 
-route '/stylesheet/' do
-  '/style.css'
+route '/static/*' do
+  '/assets'+item.identifier[7..-2]
 end
 
 route '*' do
