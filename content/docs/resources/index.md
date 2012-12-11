@@ -12,23 +12,41 @@ Guiding principles are:
 ## Hostname
 Please use https://alpha-api.app.net/ to access the APIs.
 
-## [Users](users.md)
-<table width="100%">
+
+## [Token](token)
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Description</th>
             <th>Path</th>
-            <th width="50">HTTP Method</th>
-            <th width="50">Authentication Required?</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-multiple-users">Retrieve multiple Users</a></td>
-            <td>/stream/0/users</td>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/token.md#retrieve-current-token">Retrieve the current Token</a></td>
+            <td>/stream/0/token</td>
             <td>GET</td>
             <td>Yes</td>
         </tr>
+    </tbody>
+</table>
+
+## [Users](users)
+
+### Interacting with individual Users
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
+        </tr>
+    </thead>
+    <tbody>
         <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-user">Retrieve a User</a></td>
             <td>/stream/0/users/[user_id]</td>
@@ -48,16 +66,16 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>No</td>
         </tr>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-users-cover-image">Retrieve a User's cover image</a></td>
-            <td>/stream/0/users/[user_id]/cover</td>
-            <td>GET</td>
-            <td>No</td>
-        </tr>
-        <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#update-a-users-avatar-image">Update a User's avatar image</a></td>
             <td>/stream/0/users/me/avatar</td>
             <td>POST</td>
             <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-a-users-cover-image">Retrieve a User's cover image</a></td>
+            <td>/stream/0/users/[user_id]/cover</td>
+            <td>GET</td>
+            <td>No</td>
         </tr>
         <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#update-a-users-cover-image">Update a User's cover image</a></td>
@@ -78,30 +96,6 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>Yes</td>
         </tr>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-a-user-is-following">List users a User is following</a></td>
-            <td>/stream/0/users/[user_id]/following</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-ids-a-user-is-following">List user ids a User is following</a></td>
-            <td>/stream/0/users/[user_id]/following/ids</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-following-a-user">List users following a User</a></td>
-            <td>/stream/0/users/[user_id]/followers</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-ids-following-a-user">List user ids following a User</a></td>
-            <td>/stream/0/users/[user_id]/followers/ids</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#mute-a-user">Mute a User</a></td>
             <td>/stream/0/users/[user_id]/mute</td>
             <td>POST</td>
@@ -113,41 +107,12 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>DELETE</td>
             <td>Yes</td>
         </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-muted-users">List muted Users</a></td>
-            <td>/stream/0/users/me/muted</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#search-for-users">Search for Users</a></td>
-            <td>/stream/0/users/search</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-who-have-reposted-a-post">List Users who have reposted a Post</a></td>
-            <td>/stream/0/posts/[post_id]/reposters</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-who-have-starred-a-post">List Users who have starred a Post</a></td>
-            <td>/stream/0/posts/[post_id]/stars</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-interactions-with-me">List User interactions with me</a></td>
-            <td>/stream/0/users/me/interactions</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
     </tbody>
 </table>
 
-## [Token](/appdotnet/api-spec/blob/master/resources/token.md)
-<table width="100%">
+### Retrieving lists of Users
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Description</th>
@@ -158,16 +123,72 @@ Please use https://alpha-api.app.net/ to access the APIs.
     </thead>
     <tbody>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/token.md#retrieve-current-token">Check current Token</a></td>
-            <td>/stream/0/token</td>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#search-for-users">Search for Users</a></td>
+            <td>/stream/0/users/search</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#retrieve-multiple-users">Retrieve multiple Users</a></td>
+            <td>/stream/0/users</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-a-user-is-following">Retrieve Users a User is following</a></td>
+            <td>/stream/0/users/[user_id]/following</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-ids-a-user-is-following">Retrieve IDs of Users a User is following</a></td>
+            <td>/stream/0/users/[user_id]/following/ids</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-following-a-user">Retrieve Users following a User</a></td>
+            <td>/stream/0/users/[user_id]/followers</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-ids-following-a-user">Retrieve IDs of Users following a User</a></td>
+            <td>/stream/0/users/[user_id]/followers/ids</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-muted-users">Retrieve Users muted by the current User</a></td>
+            <td>/stream/0/users/me/muted</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-user-interactions-with-me">Retrieve Interactions with the current User</a></td>
+            <td>/stream/0/users/me/interactions</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-who-have-reposted-a-post">Retrieve Users who reposted a Post</a></td>
+            <td>/stream/0/posts/[post_id]/reposters</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/users.md#list-users-who-have-starred-a-post">Retrieve Users who starred a Post</a></td>
+            <td>/stream/0/posts/[post_id]/stars</td>
             <td>GET</td>
             <td>Yes</td>
         </tr>
     </tbody>
 </table>
 
-## [Posts](/appdotnet/api-spec/blob/master/resources/posts.md)
-<table width="100%">
+## [Posts](posts)
+
+### Interacting with individual Posts
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Description</th>
@@ -184,12 +205,6 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>Yes</td>
         </tr>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-multiple-posts">Retrieve multiple Posts</a></td>
-            <td>/stream/0/posts</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-a-post">Retrieve a Post</a></td>
             <td>/stream/0/posts/[post_id]</td>
             <td>GET</td>
@@ -200,18 +215,6 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>/stream/0/posts/[post_id]</td>
             <td>DELETE</td>
             <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-the-replies-to-a-post">Retrieve the replies to a Post</a></td>
-            <td>/stream/0/posts/[post_id]/replies</td>
-            <td>GET</td>
-            <td>Yes</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-created-by-a-user">Retrieve Posts created by a User</a></td>
-            <td>/stream/0/users/[user_id]/posts</td>
-            <td>GET</td>
-            <td>No</td>
         </tr>
         <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#repost-a-post">Repost a Post</a></td>
@@ -237,8 +240,36 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>DELETE</td>
             <td>Yes</td>
         </tr>
+
+    </tbody>
+</table>
+
+### Retrieving lists of Posts
+
+<table class="table table-striped">
+    <thead>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-starred-by-a-user">Retrieve Posts starred by a User</a></td>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-multiple-posts">Retrieve multiple Posts</a></td>
+            <td>/stream/0/posts</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-created-by-a-user">Retrieve a User's posts</a></td>
+            <td>/stream/0/users/[user_id]/posts</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-starred-by-a-user">Retrieve a User's starred posts</a></td>
             <td>/stream/0/users/[user_id]/stars</td>
             <td>GET</td>
             <td>Yes</td>
@@ -246,6 +277,18 @@ Please use https://alpha-api.app.net/ to access the APIs.
         <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-posts-mentioning-a-user">Retrieve Posts mentioning a User</a></td>
             <td>/stream/0/users/[user_id]/mentions</td>
+            <td>GET</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-tagged-posts">Retrieve Posts containing a hashtag</a></td>
+            <td>/stream/0/posts/tag/[hashtag]</td>
+            <td>GET</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-the-replies-to-a-post">Retrieve replies to a Post</a></td>
+            <td>/stream/0/posts/[post_id]/replies</td>
             <td>GET</td>
             <td>Yes</td>
         </tr>
@@ -267,23 +310,14 @@ Please use https://alpha-api.app.net/ to access the APIs.
             <td>GET</td>
             <td>No</td>
         </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#retrieve-tagged-posts">Retrieve tagged Posts</a></td>
-            <td>/stream/0/posts/tag/[hashtag]</td>
-            <td>GET</td>
-            <td>No</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#update-a-stream-marker">Update a Stream Marker</a></td>
-            <td>/stream/0/posts/marker</td>
-            <td>POST</td>
-            <td>Yes</td>
-        </tr>
     </tbody>
 </table>
 
-## [Filters](/appdotnet/api-spec/blob/master/resources/filters.md)
-<table width="100%">
+## [Streams](streams)
+
+### Interacting with individual Streams
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Description</th>
@@ -293,19 +327,64 @@ Please use https://alpha-api.app.net/ to access the APIs.
     </thead>
     <tbody>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#get-current-users-filters">Get current user's Filters</a></td>
-            <td>/stream/0/filters</td>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#create-a-stream">Create a Stream</a></td>
+            <td>/stream/0/streams</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#retrieve-a-stream">Retrieve a Stream</a></td>
+            <td>/stream/0/streams/[streams_id]</td>
             <td>GET</td>
         </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-a-stream">Delete a Stream</a></td>
+            <td>/stream/0/streams/[streams_id]</td>
+            <td>DELETE</td>
+        </tr>
+    </tbody>
+</table>
+
+### Interacting with multiple Streams
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#get-current-tokens-streams">Retrieve all Streams for the current Token</a></td>
+            <td>/stream/0/streams</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-all-of-the-current-tokens-streams">Delete all Streams for the current Token</a></td>
+            <td>/stream/0/streams</td>
+            <td>DELETE</td>
+        </tr>
+    </tbody>
+</table>
+
+## [Filters](filters)
+
+### Interacting with individual Filters
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+        </tr>
+    </thead>
+    <tbody>
         <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#create-a-filter">Create a Filter</a></td>
             <td>/stream/0/filters</td>
             <td>POST</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#delete-all-of-the-current-users-filters">Delete all of the current user's Filters</a></td>
-            <td>/stream/0/filters</td>
-            <td>DELETE</td>
         </tr>
         <tr>
             <td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#retrieve-a-filter">Retrieve a Filter</a></td>
@@ -325,8 +404,9 @@ Please use https://alpha-api.app.net/ to access the APIs.
     </tbody>
 </table>
 
-## [Streams](/appdotnet/api-spec/blob/master/resources/streams.md)&mdash;experimental
-<table width="100%">
+### Interacting with multiple Filters
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Description</th>
@@ -336,29 +416,41 @@ Please use https://alpha-api.app.net/ to access the APIs.
     </thead>
     <tbody>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#get-current-tokens-streams">Get current tokens's Streams</a></td>
-            <td>/stream/0/streams</td>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#get-current-users-filters">Get the current User's Filters</a></td>
+            <td>/stream/0/filters</td>
             <td>GET</td>
         </tr>
         <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#create-a-stream">Create a Stream</a></td>
-            <td>/stream/0/streams</td>
-            <td>POST</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-all-of-the-current-tokens-streams">Delete all of the current tokens's Stream</a></td>
-            <td>/stream/0/streams</td>
-            <td>DELETE</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#retrieve-a-stream">Retrieve a Stream</a></td>
-            <td>/stream/0/streams/[streams_id]</td>
-            <td>GET</td>
-        </tr>
-        <tr>
-            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-a-stream">Delete a Stream</a></td>
-            <td>/stream/0/streams/[streams_id]</td>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/filters.md#delete-all-of-the-current-users-filters">Delete the current User's Filters</a></td>
+            <td>/stream/0/filters</td>
             <td>DELETE</td>
         </tr>
     </tbody>
 </table>
+
+## [Stream Markers](stream_markers)
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/posts.md#update-a-stream-marker">Update a Stream Marker</a></td>
+            <td>/stream/0/posts/marker</td>
+            <td>POST</td>
+            <td>Yes</td>
+        </tr>
+    </tbody>
+</table>
+
+## [Web Intents](web_intents)
+
+## [Feeds](feeds) 
+
+## [Subscriptions](subscriptions)

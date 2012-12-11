@@ -2,7 +2,58 @@
 
 **These features are still highly experimental. If you make use of them, please idle in our [developer chat room](https://www.hipchat.com/garqCaGOZ) so you can report bugs and we can communicate updates.**
 
-## General Information
+## Interacting with individual Streams ##
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#create-a-stream">Create a Stream</a></td>
+            <td>/stream/0/streams</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#retrieve-a-stream">Retrieve a Stream</a></td>
+            <td>/stream/0/streams/[streams_id]</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-a-stream">Delete a Stream</a></td>
+            <td>/stream/0/streams/[streams_id]</td>
+            <td>DELETE</td>
+        </tr>
+    </tbody>
+</table>
+
+## Interacting with multiple Streams
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#get-current-tokens-streams">Retrieve all Streams for the current Token</a></td>
+            <td>/stream/0/streams</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td><a href="/appdotnet/api-spec/blob/master/resources/streams.md#delete-all-of-the-current-tokens-streams">Delete all Streams for the current Token</a></td>
+            <td>/stream/0/streams</td>
+            <td>DELETE</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Basic Use
 

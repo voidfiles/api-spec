@@ -1,5 +1,30 @@
 # Feeds
 
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Path</th>
+            <th>HTTP Method</th>
+            <th>Authentication Required?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="">Retrieve a feed for a hashtag</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="">Retrieve a feed for a User</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
 ## General Information
 
 ### Basic Use
