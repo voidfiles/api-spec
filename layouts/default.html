@@ -9,24 +9,7 @@
 
     <!-- you don't need to keep this, but it's cool for stats! -->
     <meta name="generator" content="nanoc <%= Nanoc::VERSION %>"> 
-
-    <style type="text/css">
-      
-    </style>
-
   </head>
-
-
-
-  <!--
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span3 sidebar-nav-fixed">
-        -->
-
-                  <!--Sidebar content-->
-          <!--<div class="well sidebar-nav">-->
-
   <body>
 
     <div class="navbar navbar-fixed-top">
@@ -38,12 +21,13 @@
       </div>
     </div>
 
-    <div class="container-fluid max-height no-overflow">
-      <div class="row-fluid max-height">
-
-        <div class="span3 scrollable">
-          <div class="pad40-top">
-
+    <div class="container-fluid max-height no-overflow main">
+        <div class="main-docs-outer">
+            <div class='main-docs-inner'>
+              <%= yield %>
+            </div>
+        </div>
+        <div class='sidebar'>
             <ul class="nav nav-list">  
                 
                 <li class="nav-header"><a href="/docs/">Overview</a></li>
@@ -158,19 +142,7 @@
                   <li><a href="/docs/resources/subscriptions/">Subscriptions</a></li>
                 </ul>
             </ul>
-
-          </div>
         </div>
-
-        <div class="span9 scrollable">
-          <div class="pad40-top">
-
-              <%= yield %>
-
-          </div>
-        </div>
-
-      </div>
     </div>
 
     <!--

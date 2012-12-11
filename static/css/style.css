@@ -1,26 +1,26 @@
 body, html {
   height: 100%;
-  overflow: hidden;
+  width: 100%;
 }
 
 .navbar-inner {
   height: 40px;
 }
 
-.scrollable {
-  height: 100%;
-  overflow: auto;
+
+.main-docs-outer {
+    width: 100%;
+    margin-left: -300px;
+    float: right;
 }
 
-.max-height {
-  height: 100%;
+.main-docs-inner {
+    margin-left: 300px;
+    float: none;
+    width: auto;
 }
 
-.no-overflow {
-  overflow: hidden;
+.sidebar-outer {
+    float: left;
+    width: 280px;
 }
-
-.pad40-top {
-  padding-top: 40px;
-}
-
